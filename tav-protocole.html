@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test d'Associations Verbales (TAV)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a4d2e;
+            --primary-light: #2d6a4f;
+            --accent: #e8ab5e;
+            --text-dark: #1e1e1e;
+            --text-light: #5a5a5a;
+            --bg: #faf8f3;
+            --card-bg: #ffffff;
+            --border: #e5e0d5;
+            --shadow: rgba(26, 77, 46, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-top: 2rem;
+        }
+
+        h1 {
+            font-family: 'Spectral', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            width: 0%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 4px 24px var(--shadow);
+            border: 1px solid var(--border);
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .intro-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .inducteur-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .inducteur-term {
+            font-family: 'Spectral', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .consigne {
+            background: linear-gradient(135deg, rgba(232, 171, 94, 0.08), rgba(45, 106, 79, 0.08));
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 2rem 0;
+            font-family: 'Spectral', serif;
+            min-height: 4rem;
+        }
+
+        .timer.warning {
+            color: #d84315;
+            animation: pulse 0.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Work Sans', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--bg);
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--card-bg);
+            box-shadow: 0 0 0 3px rgba(26, 77, 46, 0.1);
+        }
+
+        .ranking-item {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .ranking-item:hover {
+            border-color: var(--primary-light);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .word-display {
+            flex: 1;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .rank-selector {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .rank-btn {
+            width: 48px;
+            height: 48px;
+            border: 2px solid var(--border);
+            background: var(--card-bg);
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .rank-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .rank-btn.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button {
+            flex: 1;
+            padding: 1.2rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Work Sans', sans-serif;
+            text-transform: none;
+            letter-spacing: 0.02em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text-dark);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: var(--card-bg);
+        }
+
+        .completion-message {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .completion-message h2 {
+            font-family: 'Spectral', serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .completion-message p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .info-section {
+            background: linear-gradient(135deg, rgba(232, 171, 94, 0.05), rgba(45, 106, 79, 0.05));
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .info-section h3 {
+            font-family: 'Spectral', serif;
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .info-section p {
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 0.8rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+
+        .start-button {
+            display: inline-block;
+            padding: 1.5rem 3rem;
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            margin-top: 2rem;
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px var(--shadow);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 2rem 1.5rem;
+            }
+
+            .inducteur-term {
+                font-size: 1.8rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .rank-selector {
+                flex-wrap: wrap;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Test d'Associations Verbales</h1>
+            <p class="subtitle">Exploration des représentations professionnelles</p>
+        </header>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <!-- Écran d'accueil -->
+        <div id="welcomeScreen" class="card">
+            <h2 style="font-family: 'Spectral', serif; font-size: 2rem; color: var(--primary); margin-bottom: 1.5rem;">Bienvenue</h2>
+            <p class="intro-text">
+                Ce test d'associations verbales (TAV) explore vos représentations spontanées autour de différents termes liés au contexte éducatif.
+            </p>
+            <p class="intro-text">
+                <strong>Déroulement :</strong> Vous serez présenté avec 8 termes inducteurs. Pour chaque terme, vous devrez :
+            </p>
+            <div class="info-section">
+                <h3>Étape 1 : Association (15 secondes)</h3>
+                <p>Notez les <strong>premiers mots ou courtes expressions</strong> qui vous viennent spontanément à l'esprit (jusqu'à 5 maximum). Ne réfléchissez pas trop, écrivez ce qui vient immédiatement. <strong>Attention :</strong> après 15 secondes, vous ne pourrez plus saisir de texte.</p>
+            </div>
+            <div class="info-section" style="margin-top: 1rem;">
+                <h3>Étape 2 : Classement</h3>
+                <p>Classez vos mots par ordre d'importance : 1 pour le plus important, puis 2, 3, etc.</p>
+            </div>
+            <div style="text-align: center;">
+                <button class="start-button" onclick="startTest()">Commencer le test</button>
+            </div>
+        </div>
+
+        <!-- Écran de saisie -->
+        <div id="inputScreen" class="card hidden">
+            <div class="inducteur-label">Terme inducteur</div>
+            <h2 class="inducteur-term" id="currentInducteur"></h2>
+            
+            <div class="consigne">
+                <strong>Consigne :</strong> Notez spontanément les premiers mots ou courtes expressions qui vous viennent à l'esprit (jusqu'à 5 maximum). Vous avez 15 secondes. Après 15 secondes, vous ne pourrez plus saisir de texte.
+            </div>
+
+            <div class="timer" id="timer"></div>
+
+            <form id="wordsForm">
+                <div class="input-group">
+                    <label for="word1">Mot 1</label>
+                    <input type="text" id="word1" maxlength="100">
+                </div>
+                <div class="input-group">
+                    <label for="word2">Mot 2</label>
+                    <input type="text" id="word2" maxlength="100">
+                </div>
+                <div class="input-group">
+                    <label for="word3">Mot 3</label>
+                    <input type="text" id="word3" maxlength="100">
+                </div>
+                <div class="input-group">
+                    <label for="word4">Mot 4</label>
+                    <input type="text" id="word4" maxlength="100">
+                </div>
+                <div class="input-group">
+                    <label for="word5">Mot 5</label>
+                    <input type="text" id="word5" maxlength="100">
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn-primary" id="submitWordsBtn">Continuer vers le classement</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Écran de classement -->
+        <div id="rankingScreen" class="card hidden">
+            <div class="inducteur-label">Classement</div>
+            <h2 class="inducteur-term" id="rankingInducteur"></h2>
+            
+            <div class="consigne" id="rankingConsigne">
+                <strong>Consigne :</strong> Classez vos mots par ordre d'importance. Attribuez le rang 1 au mot le plus important pour vous.
+            </div>
+
+            <div id="rankingItems"></div>
+
+            <div class="button-group">
+                <button class="btn-secondary" onclick="goBackToInput()">Modifier mes mots</button>
+                <button class="btn-primary" onclick="submitRanking()" id="submitRankBtn" disabled>Valider et continuer</button>
+            </div>
+        </div>
+
+        <!-- Écran de fin -->
+        <div id="completionScreen" class="card hidden">
+            <div class="completion-message">
+                <h2>Merci !</h2>
+                <p>Vous avez complété le test d'associations verbales.</p>
+                <p>Vos réponses ont été enregistrées et sont prêtes à être téléchargées.</p>
+                <button class="btn-primary" onclick="downloadResults()" style="margin: 0 auto; display: inline-block;">
+                    📥 Télécharger mes résultats (JSON)
+                </button>
+                <button class="btn-secondary" onclick="downloadResultsCSV()" style="margin: 1rem auto; display: inline-block;">
+                    📊 Télécharger mes résultats (CSV)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Test d'Associations Verbales (TAV) — Méthodologie inspirée d'Abric (2003) et Vergès (1992)</p>
+    </footer>
+
+    <script>
+        // Données
+        const inducteurs = [
+            "Décrochage scolaire",
+            "Élève de lycée professionnel",
+            "Élève décrocheur",
+            "Causes du décrochage",
+            "Réussite en lycée professionnel",
+            "Prévenir le décrochage",
+            "Élève qui ne vient plus",
+            "École obligatoire"
+        ];
+
+        let currentInducteurIndex = 0;
+        let responses = [];
+        let currentWords = [];
+        let timerInterval = null;
+        let timeRemaining = 15;
+
+        // Initialisation
+        function startTest() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            showInputScreen();
+        }
+
+        function showInputScreen() {
+            // Réinitialiser le formulaire
+            document.getElementById('wordsForm').reset();
+            
+            // Afficher le terme inducteur
+            document.getElementById('currentInducteur').textContent = inducteurs[currentInducteurIndex];
+            
+            // Afficher l'écran
+            document.getElementById('inputScreen').classList.remove('hidden');
+            document.getElementById('rankingScreen').classList.add('hidden');
+            
+            // Mettre à jour la barre de progression
+            updateProgress();
+            
+            // Démarrer le timer
+            startTimer();
+
+            // Focus sur le premier champ
+            setTimeout(() => document.getElementById('word1').focus(), 100);
+        }
+
+        function startTimer() {
+            timeRemaining = 15;
+            updateTimerDisplay();
+            
+            // Réactiver les inputs au début
+            for (let i = 1; i <= 5; i++) {
+                const input = document.getElementById(`word${i}`);
+                input.disabled = false;
+                input.style.opacity = '1';
+            }
+            
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    // Bloquer tous les champs de saisie
+                    for (let i = 1; i <= 5; i++) {
+                        const input = document.getElementById(`word${i}`);
+                        input.disabled = true;
+                        input.style.opacity = '0.6';
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const timerEl = document.getElementById('timer');
+            if (timeRemaining > 0) {
+                timerEl.textContent = `⏱️ ${timeRemaining}s`;
+                if (timeRemaining <= 5) {
+                    timerEl.classList.add('warning');
+                } else {
+                    timerEl.classList.remove('warning');
+                }
+            } else {
+                timerEl.textContent = "⏰ Temps écoulé";
+                timerEl.classList.remove('warning');
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentInducteurIndex) / inducteurs.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        // Gestion du formulaire de saisie
+        document.getElementById('wordsForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Arrêter le timer
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            
+            // Récupérer les mots (uniquement ceux qui sont remplis)
+            currentWords = [];
+            for (let i = 1; i <= 5; i++) {
+                const word = document.getElementById(`word${i}`).value.trim();
+                if (word) {
+                    currentWords.push(word);
+                }
+            }
+            
+            // Vérifier qu'au moins 1 mot a été saisi
+            if (currentWords.length === 0) {
+                alert('Veuillez saisir au moins un mot avant de continuer.');
+                return;
+            }
+            
+            showRankingScreen();
+        });
+
+        function showRankingScreen() {
+            document.getElementById('inputScreen').classList.add('hidden');
+            document.getElementById('rankingScreen').classList.remove('hidden');
+            document.getElementById('rankingInducteur').textContent = inducteurs[currentInducteurIndex];
+            
+            // Mettre à jour la consigne selon le nombre de mots
+            const numWords = currentWords.length;
+            const consigneEl = document.getElementById('rankingConsigne');
+            if (numWords === 1) {
+                consigneEl.innerHTML = '<strong>Consigne :</strong> Vous n\'avez saisi qu\'un seul mot, donc il sera automatiquement classé en rang 1.';
+            } else {
+                const ranksText = Array.from({length: numWords}, (_, i) => i + 1).join(', ').replace(/,([^,]*)$/, ' et$1');
+                consigneEl.innerHTML = `<strong>Consigne :</strong> Classez vos ${numWords} mots par ordre d'importance. Attribuez le rang 1 au mot le plus important pour vous, puis ${ranksText.substring(3)}.`;
+            }
+            
+            // Créer les éléments de classement
+            const container = document.getElementById('rankingItems');
+            container.innerHTML = '';
+            
+            const ranks = Array.from({length: numWords}, (_, i) => i + 1);
+            
+            currentWords.forEach((word, index) => {
+                const item = document.createElement('div');
+                item.className = 'ranking-item';
+                item.innerHTML = `
+                    <div class="word-display">${word}</div>
+                    <div class="rank-selector">
+                        ${ranks.map(rank => 
+                            `<button type="button" class="rank-btn" data-word-index="${index}" data-rank="${rank}">${rank}</button>`
+                        ).join('')}
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+            
+            // Si un seul mot, le classer automatiquement
+            if (numWords === 1) {
+                rankings[0] = 1;
+                document.querySelector('.rank-btn[data-rank="1"]').classList.add('selected');
+                document.getElementById('submitRankBtn').disabled = false;
+            }
+            
+            // Ajouter les écouteurs d'événements
+            document.querySelectorAll('.rank-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const wordIndex = parseInt(e.target.dataset.wordIndex);
+                    const rank = parseInt(e.target.dataset.rank);
+                    selectRank(wordIndex, rank);
+                });
+            });
+        }
+
+        let rankings = {};
+
+        function selectRank(wordIndex, rank) {
+            // Vérifier si ce rang est déjà utilisé
+            const previousWordWithRank = Object.keys(rankings).find(key => rankings[key] === rank);
+            if (previousWordWithRank) {
+                // Désélectionner l'ancien
+                const oldBtn = document.querySelector(`.rank-btn[data-word-index="${previousWordWithRank}"][data-rank="${rank}"]`);
+                if (oldBtn) oldBtn.classList.remove('selected');
+                delete rankings[previousWordWithRank];
+            }
+            
+            // Désélectionner tous les boutons de cette ligne
+            document.querySelectorAll(`.rank-btn[data-word-index="${wordIndex}"]`).forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Sélectionner le nouveau
+            const btn = document.querySelector(`.rank-btn[data-word-index="${wordIndex}"][data-rank="${rank}"]`);
+            btn.classList.add('selected');
+            rankings[wordIndex] = rank;
+            
+            // Vérifier si tous les rangs sont attribués
+            checkRankingComplete();
+        }
+
+        function checkRankingComplete() {
+            const submitBtn = document.getElementById('submitRankBtn');
+            const numWords = currentWords.length;
+            if (Object.keys(rankings).length === numWords) {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
+        }
+
+        function goBackToInput() {
+            rankings = {};
+            showInputScreen();
+            // Remplir les champs avec les mots précédents
+            currentWords.forEach((word, index) => {
+                document.getElementById(`word${index + 1}`).value = word;
+            });
+        }
+
+        function submitRanking() {
+            // Créer l'objet de réponse
+            const response = {
+                inducteur: inducteurs[currentInducteurIndex],
+                mots: currentWords.map((word, index) => ({
+                    mot: word,
+                    rang: rankings[index] || null
+                }))
+            };
+            
+            responses.push(response);
+            
+            // Réinitialiser
+            rankings = {};
+            currentWords = [];
+            
+            // Passer au suivant ou terminer
+            currentInducteurIndex++;
+            
+            if (currentInducteurIndex < inducteurs.length) {
+                showInputScreen();
+            } else {
+                showCompletionScreen();
+            }
+        }
+
+        function showCompletionScreen() {
+            document.getElementById('rankingScreen').classList.add('hidden');
+            document.getElementById('completionScreen').classList.remove('hidden');
+            
+            // Mettre à jour la barre de progression à 100%
+            document.getElementById('progressBar').style.width = '100%';
+            
+            // Sauvegarder dans localStorage
+            localStorage.setItem('tavResponses', JSON.stringify(responses));
+        }
+
+        function downloadResults() {
+            const dataStr = JSON.stringify(responses, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `tav_resultats_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadResultsCSV() {
+            // Créer le CSV
+            let csv = 'Inducteur,Mot,Rang\n';
+            
+            responses.forEach(response => {
+                response.mots.forEach(item => {
+                    csv += `"${response.inducteur}","${item.mot}",${item.rang}\n`;
+                });
+            });
+            
+            const dataBlob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `tav_resultats_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Charger les réponses sauvegardées si elles existent (pour reprise)
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('tavResponses');
+            if (saved) {
+                // Optionnel : permettre de reprendre là où on s'est arrêté
+                // Pour l'instant, on efface au démarrage pour un nouveau test
+                // localStorage.removeItem('tavResponses');
+            }
+        });
+    </script>
+</body>
+</html>
