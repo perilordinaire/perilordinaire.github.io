@@ -20,4 +20,12 @@ Protocole d'un Test d'Associations Verbales en ligne pour explorer les représen
 
 ---
 
+**Protocole - Analyse de Corpus (ADC)**
+
+Protocole d'une Analyse de Corpus en ligne pour explorer les représentations sociales d'une revue de littérature scientifique.
+
+**→ [Accéder au Protocole ADC](https://perilordinaire.github.io/adc-protocole-v1.html)**
+
+---
+
 **Contact :** ferdinand.lamolet@univ-amu.fr
