@@ -14,7 +14,7 @@ Mon approche combine l'analyse de corpus scientifiques et institutionnels avec d
 
 ## Test d'Associations Verbales (TAV)
 
-Dans le cadre de ma recherche, j'ai élaboré un Test d'Associations Verbales en ligne pour explorer les représentations professionnelles des acteurs de l'éducation.
+Test d'Associations Verbales en ligne pour explorer les représentations sociales des professionnels du secondaire.
 
 **→ [Accéder au TAV](https://perilordinaire.github.io/tav-raccrochage.html)**
 
