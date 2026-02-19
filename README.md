@@ -14,7 +14,7 @@ Mon approche combine l'analyse de corpus scientifiques et institutionnels avec d
 
 ## Test d'Associations Verbales (TAV)
 
-Test d'Associations Verbales en ligne pour explorer les représentations sociales des professionnels du secondaire.
+Test d'Associations Verbales en ligne pour explorer les représentations sociales du raccrochage scolaire chez les professionnels du secondaire.
 
 **→ [Accéder au TAV](https://perilordinaire.github.io/tav-raccrochage.html)**
 
