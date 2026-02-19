@@ -8,11 +8,13 @@ Mon approche combine l'analyse de corpus scientifiques et institutionnels avec d
 
 ---
 
-## Test d'Associations Verbales (TAV)
+**Protocole - Test d'Associations Verbales (TAV)**
 
-Test d'Associations Verbales en ligne pour explorer les représentations sociales du raccrochage scolaire chez les professionnels du secondaire.
+Protocole d'un Test d'Associations Verbales en ligne pour explorer les représentations sociales des professionnels du secondaire.
 
-**→ [Accéder au TAV](https://perilordinaire.github.io/tav-raccrochage.html)**
+**→ [Accéder au Protocole TAV](https://perilordinaire.github.io/tav-protocole-v5.html)**
+
+**→ [Accéder au TAV - Raccrochage Scolaire](https://perilordinaire.github.io/tav-raccrochage.html)**
 
 *Le test est anonyme et prend environ 6 minutes.*
 
