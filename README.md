@@ -1,4 +1,4 @@
-# Ferdinand Lamolet
+# Ferdinand Lamolet **Sciences de l'Éducation et de la Formation - Aix-Marseille Université (AMU)**
 
 Mes travaux portent sur l'épistémologie des catégories et les représentations sociales dans le champ de l'éducation. Je m'intéresse particulièrement à la manière dont les termes que nous utilisons pour désigner les phénomènes éducatifs structurent notre façon de les penser et d'agir sur eux.
 
