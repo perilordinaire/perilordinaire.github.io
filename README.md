@@ -4,7 +4,7 @@
 
 **Sciences de l'Éducation et de la Formation - Aix-Marseille Université (AMU)**
 
-[![Contact](https://img.shields.io/badge/✉_Contact-ferdinand.lamolet%40etu.univ--amu.fr-grey?style=flat-square)](mailto:ferdinand.lamolet@etu.univ-amu.fr)
+ferdinand.lamolet@etu.univ-amu.fr
 
 </div>
 
@@ -20,8 +20,8 @@ Mes travaux portent sur l'épistémologie des catégories et les représentation
 
 Transposition informatique du protocole du TAV (Abric, 2003 ; Vergès, 1992) pour explorer les représentations sociales spontanées des professionnels du secondaire.
 
-📋 Protocole [tav-protocole.md](https://perilordinaire.github.io/tav-protocole.md)
-🏫 TAV - Raccrochage Scolaire [tav-raccrochage.html](https://perilordinaire.github.io/tav-raccrochage.html)
+📋 Protocole (https://perilordinaire.github.io/tav-protocole.md)
+🏫 TAV - Raccrochage Scolaire (https://perilordinaire.github.io/tav-raccrochage.html)
 
 ---
 
@@ -29,8 +29,8 @@ Transposition informatique du protocole du TAV (Abric, 2003 ; Vergès, 1992) pou
 
 Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique.
 
-📋 Protocole [pac-protocole.html](https://perilordinaire.github.io/pac-protocole.html)
-🔎 PAC - Obstacles et Présupposés [pac-obstacles.html](https://perilordinaire.github.io/pac-obstacles.html)
+📋 Protocole (https://perilordinaire.github.io/pac-protocole.html)
+🔎 PAC - Obstacles et Présupposés (https://perilordinaire.github.io/pac-obstacles.html)
 
 ---
 
@@ -38,14 +38,13 @@ Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour
 
 Conception d'ExtraScope, un outil en ligne d'extraction d'extraits d'un document selon un paramétrage libre d'occurrences présentes dans une fourchette de mots.
 
-🔭 Application [extrascope.html](https://perilordinaire.github.io/extrascope.html)
+🔭 Application (https://perilordinaire.github.io/extrascope.html)
 
 ---
 
 <div align="center">
 
-*"péril ordinaire" fait référence au classement national des immeubles en "péril non immédiat"*
-*— un oxymore à l'image de notre système éducatif — l'effondrement peut attendre.*
-Lamolet (2026)
+"péril ordinaire" fait référence au classement national des immeubles en "péril non immédiat"
+— un oxymore à l'image de notre système éducatif — l'effondrement peut attendre. Lamolet (2026)
 
 </div>
