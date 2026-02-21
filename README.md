@@ -2,7 +2,9 @@
 
 # Ferdinand Lamolet
 
-**Sciences de l'Éducation et de la Formation - Aix-Marseille Université (AMU)**
+**Sciences de l'Éducation et de la Formation**
+
+**Aix-Marseille Université (AMU)**
 
 ferdinand.lamolet@etu.univ-amu.fr
 
@@ -21,6 +23,7 @@ Mes travaux portent sur l'épistémologie des catégories et les représentation
 Transposition informatique du protocole du TAV (Abric, 2003 ; Vergès, 1992) pour explorer les représentations sociales spontanées des professionnels du secondaire.
 
 📋 Protocole (https://perilordinaire.github.io/tav-protocole.md)
+
 🏫 TAV - Raccrochage Scolaire (https://perilordinaire.github.io/tav-raccrochage.html)
 
 ---
@@ -30,6 +33,7 @@ Transposition informatique du protocole du TAV (Abric, 2003 ; Vergès, 1992) pou
 Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique.
 
 📋 Protocole (https://perilordinaire.github.io/pac-protocole.html)
+
 🔎 PAC - Obstacles et Présupposés (https://perilordinaire.github.io/pac-obstacles.html)
 
 ---
@@ -45,6 +49,7 @@ Conception d'ExtraScope, un outil en ligne d'extraction d'extraits d'un document
 <div align="center">
 
 "péril ordinaire" fait référence au classement national des immeubles en "péril non immédiat"
+
 — un oxymore à l'image de notre système éducatif — l'effondrement peut attendre. Lamolet (2026)
 
 </div>
