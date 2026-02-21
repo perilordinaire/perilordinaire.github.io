@@ -20,9 +20,9 @@ Protocole d'un Test d'Associations Verbales en ligne pour explorer les représen
 
 Protocole d'une Analyse de Corpus en ligne pour explorer les représentations sociales d'une revue de littérature scientifique.
 
-**→ [Accéder au Protocole PAC](https://perilordinaire.github.io/adc-protocole-v1.html)**
+**→ [Accéder au Protocole PAC](https://perilordinaire.github.io/pac-protocole-v1.html)**
 
-**→ [Accéder au PAC - Raccrochage Scolaire](https://perilordinaire.github.io/adc-protocole-v1.html)**
+**→ [Accéder au PAC - Raccrochage Scolaire](https://perilordinaire.github.io/pac-protocole-v1.html)**
 
 ---
 
