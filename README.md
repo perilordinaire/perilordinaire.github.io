@@ -30,4 +30,4 @@ Conception d'une Plateforme d'Analyse de Corpus en ligne pour explorer les repr�
 
 ---
 
-*péril ordinaire fait référence au classement marseillais des immeubles en "péril non immédiat" - un oxymore à l'image de notre système éducatif.*
+*péril ordinaire fait référence au classement national des immeubles en "péril non immédiat" - un oxymore à l'image de notre système éducatif*
