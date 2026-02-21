@@ -1,10 +1,8 @@
-# 🔧 Guide de réutilisation du TAV
+# Guide de réutilisation du TAV
 
 **Vous souhaitez utiliser cet outil pour votre propre recherche ?** Excellente nouvelle : le code est ouvert et adaptable ! Suivez ce guide étape par étape pour créer votre propre Test d'Associations Verbales.
 
 ---
-
-## 📋 Avant de commencer
 
 **Vous aurez besoin de :**
 - Un compte GitHub (gratuit)
@@ -12,22 +10,20 @@
 - 30 minutes de votre temps
 - Vos propres termes inducteurs
 
-**Aucune compétence en programmation n'est requise !**
-
 ---
 
-## ⚙️ Étape 1 : Récupérer le code source
+## Étape 1 : Récupérer le code source
 
 1. Allez sur la page : [https://perilordinaire.github.io/tav-raccrochage.html](https://perilordinaire.github.io/tav-raccrochage.html)
 2. Faites un **clic droit** sur la page → **Afficher le code source** (ou `Ctrl+U` / `Cmd+U`)
 3. **Sélectionnez tout** le code (`Ctrl+A` / `Cmd+A`)
 4. **Copiez** le code (`Ctrl+C` / `Cmd+C`)
 
-💡 **Astuce :** Tout le code est dans un seul fichier HTML — c'est voulu pour faciliter la réutilisation !
+Tout le code est dans un seul fichier HTML — c'est voulu pour faciliter la réutilisation !
 
 ---
 
-## 📁 Étape 2 : Créer votre dépôt GitHub
+## Étape 2 : Créer votre dépôt GitHub
 
 1. Connectez-vous à [GitHub](https://github.com)
 2. Cliquez sur le **+** en haut à droite → **New repository**
@@ -38,7 +34,7 @@
 
 ---
 
-## 📝 Étape 3 : Créer votre fichier HTML
+## Étape 3 : Créer votre fichier HTML
 
 1. Dans votre nouveau dépôt, cliquez sur **Add file** → **Create new file**
 2. Nommez le fichier : `index.html`
@@ -47,7 +43,7 @@
 
 ---
 
-## 🎯 Étape 4 : Personnaliser vos termes inducteurs
+## Étape 4 : Personnaliser vos termes inducteurs
 
 1. Dans votre fichier `index.html`, cherchez cette section (vers la ligne 690) :
 
@@ -61,7 +57,7 @@ const inducteurs = [
 ];
 ```
 
-2. Cliquez sur l'icône **✏️ (Edit)** en haut à droite du fichier
+2. Cliquez sur l'icône **(Edit)** en haut à droite du fichier
 3. **Remplacez** les termes par les vôtres, par exemple :
 
 ```javascript
@@ -74,11 +70,11 @@ const inducteurs = [
 
 4. **Sauvegardez** en cliquant sur **Commit changes**
 
-💡 **Important :** Vous pouvez mettre entre 3 et 8 termes. Gardez la même structure avec les guillemets et les virgules !
+Vous pouvez mettre entre 3 et 8 termes. Gardez la même structure avec les guillemets et les virgules !
 
 ---
 
-## 📊 Étape 5 : Configurer votre Google Sheet
+## Étape 5 : Configurer votre Google Sheet
 
 ### 5.1 Créer la feuille de calcul
 
@@ -146,7 +142,7 @@ const SCRIPT_URL = 'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI';
 
 ---
 
-## 🌐 Étape 6 : Activer GitHub Pages
+## Étape 6 : Activer GitHub Pages
 
 1. Dans votre dépôt GitHub, allez dans **Settings** (en haut)
 2. Dans le menu de gauche, cliquez sur **Pages**
@@ -157,12 +153,11 @@ const SCRIPT_URL = 'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI';
 
 ---
 
-## ✅ Étape 7 : Tester votre TAV
+## Étape 7 : Tester votre TAV
 
 1. Ouvrez l'URL de votre TAV
 2. Faites un test complet du début à la fin
 3. Vérifiez que les données arrivent bien dans votre Google Sheet
-4. Si tout fonctionne : **bravo, c'est prêt !** 🎉
 
 **Si ça ne marche pas :**
 - Vérifiez que vous avez bien autorisé le script Google Apps
@@ -171,7 +166,7 @@ const SCRIPT_URL = 'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI';
 
 ---
 
-## 🎨 Étape 8 (optionnelle) : Personnaliser l'apparence
+## Étape 8 (optionnelle) : Personnaliser l'apparence
 
 Vous pouvez modifier :
 
@@ -192,31 +187,18 @@ Vous pouvez modifier :
 
 ---
 
-## 📖 Étape 9 : Respecter les propriétés intellectuelles
+## N'oubliez pas de respecter les propriétés intellectuelles
 
-**Important :** Si vous utilisez cet outil, veuillez conserver les références méthodologiques dans le pied de page (ligne ~905) :
+Si vous utilisez cet outil, veuillez conserver les références méthodologiques dans le pied de page (ligne ~905) :
 
 ```html
 <footer>
-    <p>Test d'Associations Verbales (TAV) — Méthodologie inspirée d'Abric (2003) et Vergès (1992)</p>
+    <p>Test d'Associations Verbales (TAV) d'Abric (2003) et Vergès (1992) - Lamolet (2026)</p>
 </footer>
-```
-
-**Et dans vos publications, citez :**
-
-```
-Lamolet, F. (2025). Outil de Test d'Associations Verbales en ligne. 
-https://perilordinaire.github.io/tav-raccrochage.html
-
-Abric, J.-C. (2003). Les représentations sociales. PUF.
-
-Vergès, P. (1992). L'évocation de l'argent : Une méthode pour la définition 
-du noyau central d'une représentation. Bulletin de psychologie, 45(405), 203-209.
-```
 
 ---
 
-## 💡 Conseils pour votre recherche
+## Conseils pour votre recherche
 
 **Taille de l'échantillon :** 
 - Minimum recommandé (Abric, 2003) : **N = 80** participants
@@ -233,14 +215,12 @@ du noyau central d'une représentation. Bulletin de psychologie, 45(405), 203-20
 
 ---
 
-## 🤝 Besoin d'aide ?
+## Besoin d'aide ?
 
 Si vous rencontrez un problème :
 1. Vérifiez que vous avez suivi **toutes les étapes** dans l'ordre
 2. Consultez la section "Si ça ne marche pas" de l'Étape 7
-3. Contactez-moi : **ferdinand.lamolet@univ-amu.fr**
-
-**Bon courage avec votre recherche !** 🎓
+3. Contactez-moi : **ferdinand.lamolet@etu-univ-amu.fr**
 
 ---
 
