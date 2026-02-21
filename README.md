@@ -11,27 +11,27 @@ Mon approche combine l'analyse de corpus scientifiques et institutionnels avec d
 
 Traduction numérique d'un Test d'Associations Verbales (Abric, 2003 ; Vergès, 1992) pour explorer les représentations sociales spontanées des professionnels du secondaire.
 
-**→ [Accéder au Protocole TAV](https://perilordinaire.github.io/tav-protocole.md)**
+**→ [Protocole TAV](https://perilordinaire.github.io/tav-protocole.md)**
 
-**→ [Accéder au TAV - Raccrochage Scolaire](https://perilordinaire.github.io/tav-raccrochage.html)**
+**→ [TAV - Raccrochage Scolaire](https://perilordinaire.github.io/tav-raccrochage.html)**
 
 ---
 
 **Plateforme d'Analyse de Corpus (PAC)**
 
-Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique.
+Conception de PAC (Lamolet, 2026), une plateforme coopérative d'analyse de corpus en ligne pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique.
 
-**→ [Accéder au Protocole PAC](https://perilordinaire.github.io/pac-protocole.html)**
+**→ [Protocole PAC](https://perilordinaire.github.io/pac-protocole.html)**
 
-**→ [Accéder à la PAC - Obstacles et Présupposés](https://perilordinaire.github.io/pac-obstacles.html)**
+**→ [PAC - Obstacles et Présupposés](https://perilordinaire.github.io/pac-obstacles.html)**
 
 ---
 
 **ExtraScope**
 
-Conception d'ExtraScope, un outil d'extraction d'extraits dans un document d'après un paramétrage libre d'occurrences présentes dans une fouchette de mots. 
+Conception d'ExtraScope (Lamolet,2026), un outil d'extraction d'extraits dans un document d'après un paramétrage libre d'occurrences présentes dans une fouchette de mots. 
 
-**→ [Accéder à l'ExtraScope](https://perilordinaire.github.io/extrascope.html)**
+**→ [ExtraScope](https://perilordinaire.github.io/extrascope.html)**
 
 ---
 
