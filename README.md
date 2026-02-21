@@ -15,14 +15,12 @@ Mes travaux portent sur l'épistémologie des catégories et les représentation
 
 ---
 
-## Test d'Associations Verbales Numérique — TAVN
+**Test d'Associations Verbales Numérique — TAVN**
 
 Transposition numérique d'un TAV (Abric, 2003 ; Vergès, 1992) pour explorer les représentations sociales spontanées des professionnels du secondaire.
 
-| Ressource | Lien |
-|---|---|
-| 📋 Protocole | [tav-protocole.md](https://perilordinaire.github.io/tav-protocole.md) |
-| 🏫 TAV — Raccrochage Scolaire | [tav-raccrochage.html](https://perilordinaire.github.io/tav-raccrochage.html) |
+📋 Protocole | [tav-protocole.md](https://perilordinaire.github.io/tav-protocole.md)
+🏫 TAV — Raccrochage Scolaire | [tav-raccrochage.html](https://perilordinaire.github.io/tav-raccrochage.html)
 
 ---
 
@@ -30,10 +28,8 @@ Transposition numérique d'un TAV (Abric, 2003 ; Vergès, 1992) pour explorer le
 
 Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique.
 
-| Ressource | Lien |
-|---|---|
-| 📋 Protocole | [pac-protocole.html](https://perilordinaire.github.io/pac-protocole.html) |
-| 🔎 PAC — Obstacles et Présupposés | [pac-obstacles.html](https://perilordinaire.github.io/pac-obstacles.html) |
+📋 Protocole | [pac-protocole.html](https://perilordinaire.github.io/pac-protocole.html)
+🔎 PAC — Obstacles et Présupposés | [pac-obstacles.html](https://perilordinaire.github.io/pac-obstacles.html)
 
 ---
 
@@ -41,9 +37,7 @@ Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour
 
 Conception d'ExtraScope, un outil en ligne d'extraction d'extraits d'un document d'après un paramétrage libre d'occurrences présentes dans une fourchette de mots.
 
-| Ressource | Lien |
-|---|---|
-| 🔭 Application | [extrascope.html](https://perilordinaire.github.io/extrascope.html) |
+🔭 Application | [extrascope.html](https://perilordinaire.github.io/extrascope.html)
 
 ---
 
