@@ -38,7 +38,7 @@ Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour
 
 **ExtraScope**
 
-Conception d'ExtraScope, un outil en ligne d'extraction d'extraits d'un document selon un paramétrage libre d'occurrences présentes dans une fourchette de mots.
+Conception d'ExtraScope, un outil en ligne d'extraction d'extraits d'un document selon un paramétrage libre d'occurrences présentes dans une certaine fourchette de mots.
 
 🔭 Application (https://perilordinaire.github.io/extrascope.html)
 
