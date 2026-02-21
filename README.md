@@ -11,7 +11,7 @@ Mon approche combine l'analyse de corpus scientifiques et institutionnels avec d
 
 Traduction numérique d'un Test d'Associations Verbales pour explorer les représentations sociales des professionnels du secondaire.
 
-**→ [Accéder au Protocole TAV](https://perilordinaire.github.io/tav-protocole-v5.html)**
+**→ [Accéder au Protocole TAV](https://perilordinaire.github.io/tav-protocole.md)**
 
 **→ [Accéder au TAV - Raccrochage Scolaire](https://perilordinaire.github.io/tav-raccrochage.html)**
 
