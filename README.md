@@ -18,7 +18,7 @@ Nos recherches portent sur l'épistémologie des catégories et les représentat
 
 **Test d'Associations Verbales Informatique — TAVI**
 
-Transposition informatique du protocole du TAV (Abric, 2003 ; Vergès, 1992) pour explorer les représentations sociales spontanées des professionnels du secondaire.
+Transposition informatique du protocole du Test d'Associations Verbales (Abric, 2003 ; Vergès, 1992) pour explorer les représentations sociales spontanées des professionnels du secondaire.
 
 📋 Protocole (https://perilordinaire.github.io/tav-protocole.md)
 
@@ -38,7 +38,7 @@ Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour
 
 **ExtraScope**
 
-Conception d'ExtraScope, un outil en ligne d'extraction d'extraits d'un document selon un paramétrage libre d'occurrences présentes dans une certaine fourchette de mots.
+Conception d'ExtraScope, un outil en ligne d'extraction d'extraits d'un document selon un paramétrage libre d'occurrences présentes dans une fourchette de mots déterminée.
 
 🔭 Application (https://perilordinaire.github.io/extrascope.html)
 
