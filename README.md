@@ -9,7 +9,7 @@ Mon approche combine l'analyse de corpus scientifiques et institutionnels avec d
 
 **Test d'Associations Verbales (TAV)**
 
-Traduction numérique d'un Test d'Associations Verbales pour explorer les représentations sociales des professionnels du secondaire.
+Traduction numérique d'un Test d'Associations Verbales pour explorer les représentations sociales spontanées des professionnels du secondaire.
 
 **→ [Accéder au Protocole TAV](https://perilordinaire.github.io/tav-protocole.md)**
 
@@ -19,11 +19,11 @@ Traduction numérique d'un Test d'Associations Verbales pour explorer les repré
 
 **Plateforme d'Analyse de Corpus (PAC)**
 
-Conception d'une Plateforme d'Analyse de Corpus en ligne pour explorer les représentations sociales d'une revue de littérature scientifique.
+Conception d'une Plateforme d'Analyse de Corpus en ligne pour explorer les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique.
 
-**→ [Accéder au Protocole PAC](https://perilordinaire.github.io/pac-protocole-v1.html)**
+**→ [Accéder au Protocole PAC](https://perilordinaire.github.io/pac-protocole.html)**
 
-**→ [Accéder au PAC - Raccrochage Scolaire](https://perilordinaire.github.io/pac-protocole-v1.html)**
+**→ [Accéder au PAC - Obstacles Épistémologiques et Présupposés Normatifs](https://perilordinaire.github.io/pac-obstacles.html)**
 
 ---
 
