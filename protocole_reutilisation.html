@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protocole de réutilisation — PAC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #F7F4EF;
+    --surface:  #FFFFFF;
+    --border:   #E2DDD6;
+    --ink:      #1A1815;
+    --ink-2:    #5A5550;
+    --ink-3:    #9A9590;
+    --accent:   #B85C38;
+    --accent-lt:#F0E0D8;
+    --navy:     #1E2D40;
+    --navy-lt:  #EDF1F5;
+    --green:    #2D6A4F;
+    --green-lt: #D8EDE5;
+    --amber:    #92600A;
+    --amber-lt: #FEF3C7;
+    --step-w:   520px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+  html { font-size: 15px; scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    color: #fff;
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content:'';
+    position:absolute; inset:0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,255,255,.025) 40px,
+      rgba(255,255,255,.025) 41px
+    );
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: .75rem; letter-spacing: .18em;
+    text-transform: uppercase; color: #7AA4C2;
+    margin-bottom: 1rem; position: relative;
+  }
+  .hero h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    font-weight: 700; line-height: 1.2;
+    position: relative; margin-bottom: .75rem;
+  }
+  .hero h1 em { font-style: italic; color: #A8C4D8; }
+  .hero-sub {
+    font-size: .95rem; color: #A8BFD4; max-width: 560px;
+    margin: 0 auto 2rem; position: relative;
+  }
+  .hero-badges { display:flex; gap:.75rem; justify-content:center; flex-wrap:wrap; position:relative; }
+  .hero-badge {
+    padding: .3rem .9rem; border-radius: 99px;
+    font-size: .75rem; font-weight: 600; letter-spacing: .04em;
+    border: 1px solid rgba(255,255,255,.2); color: #C8D8E8;
+    background: rgba(255,255,255,.07);
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+  .section { padding: 3.5rem 0; }
+  .section + .section { border-top: 1px solid var(--border); }
+
+  /* ── INTRO BLOCK ── */
+  .intro-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:1.5rem; }
+  .intro-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.25rem;
+  }
+  .intro-card h3 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: .9rem; margin-bottom: .5rem;
+  }
+  .intro-card p { font-size: .85rem; color: var(--ink-2); line-height: 1.6; }
+
+  /* ── SECTION TITLES ── */
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: .6rem;
+  }
+  h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.4rem; font-weight: 700; color: var(--ink);
+    margin-bottom: 1rem;
+  }
+  .lead { font-size: .95rem; color: var(--ink-2); margin-bottom: 2rem; max-width: 640px; }
+
+  /* ── STEPS ── */
+  .steps { display:flex; flex-direction:column; gap:0; }
+  .step {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 0 1.5rem;
+    position: relative;
+  }
+  .step:not(:last-child) .step-line {
+    position: absolute; left: 31px; top: 56px; bottom: 0;
+    width: 2px; background: var(--border);
+  }
+  .step-num-col { display:flex; flex-direction:column; align-items:center; padding-top:.25rem; }
+  .step-num {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: #fff;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.05rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; position: relative; z-index: 1;
+    box-shadow: 0 0 0 4px var(--bg);
+  }
+  .step-body { padding: .1rem 0 2.5rem; }
+  .step-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: .68rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink-3); margin-bottom: .3rem;
+  }
+  .step h3 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.05rem; font-weight: 700; margin-bottom: .6rem; color: var(--ink);
+  }
+  .step p { font-size: .88rem; color: var(--ink-2); margin-bottom: .75rem; line-height:1.65; }
+  .step p:last-child { margin-bottom:0; }
+
+  /* ── CODE BLOCKS ── */
+  .code-block {
+    background: var(--navy);
+    color: #A8C8E0;
+    font-family: 'DM Mono', monospace;
+    font-size: .8rem; line-height: 1.6;
+    border-radius: 8px; padding: 1rem 1.25rem;
+    margin: .75rem 0; overflow-x: auto;
+    position: relative;
+  }
+  .code-block .co { color: #5A7A9A; }
+  .code-block .k  { color: #F4A26E; }
+  .code-block .s  { color: #A8D8B0; }
+  .code-block .v  { color: #F0C070; }
+  .code-label {
+    font-family: 'DM Mono', monospace; font-size: .68rem;
+    text-transform: uppercase; letter-spacing: .1em;
+    color: var(--ink-3); margin-bottom: .35rem;
+  }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    border-radius: 8px; padding: .9rem 1.1rem;
+    font-size: .85rem; line-height: 1.6;
+    display: flex; gap: .7rem; align-items: flex-start;
+    margin: .75rem 0;
+  }
+  .callout-icon { flex-shrink:0; font-size:1rem; margin-top:.05rem; }
+  .callout-tip  { background: var(--green-lt); color: #1A4D36; border: 1px solid #B0D9CA; }
+  .callout-warn { background: var(--amber-lt); color: #5C3D06; border: 1px solid #F7D06A; }
+  .callout-info { background: var(--navy-lt);  color: #1A2D40; border: 1px solid #B0C4D8; }
+  .callout-legal { background: var(--accent-lt); color: #6B2A12; border: 1px solid #DDA88C; }
+
+  /* ── DIM TABLE ── */
+  .dim-table { width:100%; border-collapse:collapse; font-size:.83rem; margin-top:.75rem; }
+  .dim-table th {
+    text-align:left; padding:.5rem .75rem;
+    font-size:.72rem; font-weight:600; text-transform:uppercase; letter-spacing:.07em;
+    color:var(--ink-2); background:#FAFAF8; border-bottom:1px solid var(--border);
+  }
+  .dim-table td { padding:.55rem .75rem; border-bottom:1px solid #EFEBE6; vertical-align:top; }
+  .dim-table tr:last-child td { border-bottom:none; }
+  .dim-id {
+    font-family:'DM Mono',monospace; font-size:.75rem;
+    background:var(--navy); color:#fff; padding:.15rem .45rem;
+    border-radius:3px; white-space:nowrap;
+  }
+  .dim-table .opt { font-family:'DM Mono',monospace; font-size:.75rem; color:var(--accent); }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style:none; margin-top:.75rem; }
+  .checklist li {
+    display:flex; gap:.75rem; align-items:flex-start;
+    padding:.45rem 0; border-bottom:1px solid #EFEBE6;
+    font-size:.87rem; color:var(--ink-2);
+  }
+  .checklist li:last-child { border-bottom:none; }
+  .check-box {
+    width:18px; height:18px; border-radius:4px;
+    border:2px solid var(--border); flex-shrink:0;
+    margin-top:.1rem;
+  }
+
+  /* ── LEGAL BANNER ── */
+  .legal-banner {
+    background: var(--navy);
+    color: #C8D8E8;
+    border-radius: 10px;
+    padding: 1.75rem 2rem;
+    margin-top: 2rem;
+  }
+  .legal-banner h3 {
+    font-family: 'Libre Baskerville', serif;
+    color: #fff; margin-bottom: .75rem; font-size: 1rem;
+  }
+  .legal-banner p { font-size: .85rem; line-height:1.65; }
+  .legal-banner .credit {
+    font-family: 'DM Mono', monospace;
+    font-size: .8rem; color: #7AA4C2;
+    background: rgba(255,255,255,.07);
+    border-radius: 6px; padding: .75rem 1rem;
+    margin-top: 1rem; border-left: 3px solid var(--accent);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #111820; color: #5A7A9A;
+    text-align:center; padding: 2rem;
+    font-size: .78rem; font-family: 'DM Mono', monospace;
+  }
+  footer a { color: #7AA4C2; text-decoration:none; }
+
+  @media (max-width:640px) {
+    .intro-grid { grid-template-columns:1fr; }
+    .step { grid-template-columns: 48px 1fr; gap:0 1rem; }
+    .container { padding:0 1.25rem; }
+    .hero { padding: 2.5rem 1.25rem 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-eyebrow">Guide de réutilisation</div>
+  <h1>Adapter la <em>PAC</em> à<br>votre propre corpus</h1>
+  <p class="hero-sub">Ce protocole explique pas à pas comment récupérer, déployer et personnaliser la Plateforme d'Analyse de Corpus pour n'importe quelle recherche qualitative.</p>
+  <div class="hero-badges">
+    <span class="hero-badge">GitHub Pages — gratuit</span>
+    <span class="hero-badge">Aucune installation</span>
+    <span class="hero-badge">Export CSV · Jamovi · Sphinx</span>
+    <span class="hero-badge">1 fichier HTML unique</span>
+  </div>
+</div>
+
+<!-- ── SECTION : PRÉSENTATION ── -->
+<div class="section">
+  <div class="container">
+    <div class="section-eyebrow">Présentation</div>
+    <h2>Qu'est-ce que la PAC ?</h2>
+    <p class="lead">La PAC est un outil de codage de corpus conçu pour la recherche en sciences humaines et sociales. Elle permet de gérer un corpus documentaire, de coder des extraits selon une grille de dimensions analytiques, puis d'exporter les données vers Jamovi ou Sphinx pour l'analyse statistique.</p>
+
+    <div class="intro-grid">
+      <div class="intro-card">
+        <h3>🔬 Pour quel usage ?</h3>
+        <p>Toute recherche impliquant une analyse systématique de corpus : discours institutionnels, articles scientifiques, entretiens, rapports, manuels scolaires, presse, etc.</p>
+      </div>
+      <div class="intro-card">
+        <h3>⚙️ Comment ça fonctionne ?</h3>
+        <p>Un fichier HTML unique qui tourne dans n'importe quel navigateur. Les données sont sauvegardées localement et exportables en CSV compatible avec les logiciels d'analyse.</p>
+      </div>
+      <div class="intro-card">
+        <h3>📐 Ce que vous allez modifier</h3>
+        <p>Principalement le bloc <code>DIMS</code> dans le code JavaScript : c'est là que vivent vos 6 dimensions, leurs indicateurs, leurs options de codage et leurs questions directrices.</p>
+      </div>
+      <div class="intro-card">
+        <h3>⏱ Combien de temps ?</h3>
+        <p>Compter 30 à 60 minutes pour adapter l'outil à un nouveau corpus, une fois ce protocole en main. Aucune connaissance en programmation avancée n'est nécessaire.</p>
+      </div>
+    </div>
+
+    <div class="callout callout-legal" style="margin-top:1.5rem;">
+      <span class="callout-icon">⚖️</span>
+      <div><strong>Propriété intellectuelle.</strong> La PAC a été conçue et développée par <strong>Lamolet (2026)</strong> dans le cadre d'une recherche sur le décrochage scolaire en lycée professionnel. Toute réutilisation doit mentionner cette attribution dans le code et dans les publications qui en découlent. Voir la <a href="#legal" style="color:var(--accent)">section Licence</a> en bas de page.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SECTION : ÉTAPES ── -->
+<div class="section">
+  <div class="container">
+    <div class="section-eyebrow">Protocole</div>
+    <h2>Les étapes de réutilisation</h2>
+    <p class="lead">Suivez ces 7 étapes dans l'ordre. Chaque étape est autonome et illustrée d'exemples concrets.</p>
+
+    <div class="steps">
+
+      <!-- STEP 1 -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">1</div></div>
+        <div class="step-body">
+          <div class="step-tag">Récupération du code</div>
+          <h3>Accéder au fichier source sur GitHub</h3>
+          <p>Rendez-vous sur le dépôt GitHub qui héberge la PAC. Si la page affiche l'interface de l'application, cherchez le lien vers le dépôt (souvent en bas de page ou dans le README). Sur la page du dépôt, cliquez sur le fichier <strong>index.html</strong> pour l'ouvrir.</p>
+          <p>Une fois le fichier ouvert, cliquez sur le bouton <strong>Raw</strong> (en haut à droite de la zone de code). Cela affiche le code source brut dans votre navigateur, sans mise en forme.</p>
+          <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div>Sur la page Raw, faites <strong>Ctrl+A</strong> puis <strong>Ctrl+C</strong> (ou Cmd+A / Cmd+C sur Mac) pour sélectionner et copier la totalité du code en une seule fois.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">2</div></div>
+        <div class="step-body">
+          <div class="step-tag">Création de votre dépôt</div>
+          <h3>Créer votre propre dépôt GitHub Pages</h3>
+          <p>Connectez-vous à GitHub (créez un compte gratuit si vous n'en avez pas). Cliquez sur <strong>New repository</strong>. Donnez-lui un nom explicite, par exemple : <code>pac-curriculum-vitae</code> ou <code>analyse-manuels-histoire</code>.</p>
+          <p>Dans les paramètres du dépôt (<strong>Settings → Pages</strong>), activez GitHub Pages en sélectionnant la branche <strong>main</strong> comme source. Votre application sera alors accessible à une URL du type :</p>
+          <div class="code-label">Votre URL publique</div>
+          <div class="code-block">https://<span class="v">votre-nom-utilisateur</span>.github.io/<span class="v">nom-du-depot</span>/</div>
+          <p>Créez maintenant un fichier <strong>index.html</strong> à la racine du dépôt et collez-y le code que vous avez copié à l'étape 1.</p>
+          <div class="callout callout-info">
+            <span class="callout-icon">ℹ️</span>
+            <div>Vous pouvez aussi éditer directement dans l'interface GitHub sans installer quoi que ce soit : cliquez sur le fichier → icône crayon → modifiez → <strong>Commit changes</strong>. L'application se met à jour en 30 secondes.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">3</div></div>
+        <div class="step-body">
+          <div class="step-tag">Identification des zones à modifier</div>
+          <h3>Repérer le bloc à personnaliser dans le code</h3>
+          <p>Ouvrez votre fichier <strong>index.html</strong> dans un éditeur de texte (Notepad++, VSCode, ou même l'éditeur GitHub). Cherchez le commentaire suivant avec <strong>Ctrl+F</strong> :</p>
+          <div class="code-label">Rechercher dans le fichier</div>
+          <div class="code-block"><span class="co">// ═══════════════════ DATA ═══════════════════</span>
+<span class="k">const</span> <span class="v">DIMS</span> = [</div>
+          <p>C'est ici que résident toutes vos dimensions analytiques. Chaque objet dans ce tableau correspond à une dimension de votre grille de codage. C'est <strong>la seule zone du code que vous devez impérativement modifier</strong> pour adapter l'outil à votre recherche.</p>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div>Ne modifiez rien en dehors de ce bloc <code>DIMS</code> et de la section <strong>Étape 7</strong> (titre et attribution) sauf si vous maîtrisez JavaScript. Toute la logique de l'application dépend de la structure exacte de ce tableau.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">4</div></div>
+        <div class="step-body">
+          <div class="step-tag">Personnalisation du cœur analytique</div>
+          <h3>Remplacer les dimensions par les vôtres</h3>
+          <p>Chaque dimension suit une structure précise. Voici le modèle à reproduire autant de fois que vous avez de dimensions (entre 4 et 8 est recommandé pour préserver la fiabilité inter-codeurs) :</p>
+          <div class="code-label">Structure d'une dimension — à copier-coller et remplir</div>
+          <div class="code-block">{
+  <span class="k">id</span>: <span class="s">'D1'</span>,            <span class="co">// Identifiant court : D1, D2, D3...</span>
+  <span class="k">label</span>: <span class="s">'Nom de la dimension'</span>,
+  <span class="k">question</span>: <span class="s">'La question directrice que se pose le codeur ?'</span>,
+  <span class="k">options</span>: [           <span class="co">// 2 à 4 options de codage</span>
+    {<span class="k">v</span>:<span class="s">'P'</span>, <span class="k">l</span>:<span class="s">'Présente'</span>},
+    {<span class="k">v</span>:<span class="s">'A'</span>, <span class="k">l</span>:<span class="s">'Absente'</span>},
+    {<span class="k">v</span>:<span class="s">'M'</span>, <span class="k">l</span>:<span class="s">'Mixte'</span>}
+  ],
+  <span class="k">indicators</span>: {
+    <span class="k">present</span>: [           <span class="co">// Liste des signes que la dimension est présente</span>
+      <span class="s">'Indicateur 1'</span>,
+      <span class="s">'Indicateur 2'</span>,
+    ],
+    <span class="k">absent</span>: [            <span class="co">// Liste des signes que la dimension est absente</span>
+      <span class="s">'Indicateur A'</span>,
+      <span class="s">'Indicateur B'</span>,
+    ]
+  }
+},</div>
+
+          <p>Pour chaque dimension, remplacez simplement les textes entre guillemets par vos propres formulations. Les identifiants <code>v</code> (valeur courte, ex. <code>'P'</code>) doivent rester courts car ils apparaîtront dans les exports CSV.</p>
+
+          <p>Voici comment la grille originale de Lamolet est structurée, pour vous donner un modèle de référence :</p>
+          <table class="dim-table">
+            <thead><tr><th>ID</th><th>Dimension</th><th>Question directrice</th><th>Options</th></tr></thead>
+            <tbody>
+              <tr><td><span class="dim-id">D1</span></td><td>Réification</td><td>Le décrochage est-il traité comme une « chose » possédée par l'élève ?</td><td class="opt">P / A / M</td></tr>
+              <tr><td><span class="dim-id">D2</span></td><td>Vocabulaire clinique</td><td>Un vocabulaire médical/pathologique est-il utilisé ?</td><td class="opt">P / A / M + Cible</td></tr>
+              <tr><td><span class="dim-id">D3</span></td><td>Focalisation</td><td>Où est situé le problème ? Dans l'élève ou dans l'institution ?</td><td class="opt">E / I / M</td></tr>
+              <tr><td><span class="dim-id">D4</span></td><td>Reconnaissance des acquis</td><td>Les savoirs hors école sont-ils évoqués ?</td><td class="opt">P / A / M</td></tr>
+              <tr><td><span class="dim-id">D5</span></td><td>Norme implicite</td><td>Les normes scolaires sont-elles explicitées ou présupposées ?</td><td class="opt">I / E / M</td></tr>
+              <tr><td><span class="dim-id">D6</span></td><td>Statut du LP</td><td>Le LP est-il défini par défaut ou avec une logique propre ?</td><td class="opt">D / P / M</td></tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div><strong>Bonne pratique.</strong> Testez votre grille sur 2 ou 3 extraits avant de coder l'ensemble du corpus. Si vous hésitez souvent entre deux options sur la même dimension, c'est signe que la question directrice ou les indicateurs doivent être précisés.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">5</div></div>
+        <div class="step-body">
+          <div class="step-tag">Adaptation des métadonnées</div>
+          <h3>Ajuster les champs du formulaire Corpus</h3>
+          <p>Les listes déroulantes du formulaire d'ajout de documents (Type, Focus, Période) sont également adaptables. Cherchez dans le code les blocs <code>&lt;select id="c-type"&gt;</code>, <code>&lt;select id="c-focus"&gt;</code> et <code>&lt;select id="c-periode"&gt;</code>.</p>
+          <p>Par exemple, si votre corpus couvre la presse quotidienne régionale et la presse nationale, vous pourriez remplacer <em>Scientifique / Institutionnel</em> par <em>PQR / PQN / Presse spécialisée</em>. Modifiez simplement le texte entre les balises <code>&lt;option&gt;</code>.</p>
+          <div class="code-label">Exemple — Adapter le type de source</div>
+          <div class="code-block"><span class="co">&lt;!-- Remplacer ceci... --&gt;</span>
+&lt;<span class="k">option</span>&gt;Scientifique&lt;/<span class="k">option</span>&gt;
+&lt;<span class="k">option</span>&gt;Institutionnel&lt;/<span class="k">option</span>&gt;
+
+<span class="co">&lt;!-- ...par vos propres catégories --&gt;</span>
+&lt;<span class="k">option</span>&gt;Presse quotidienne régionale&lt;/<span class="k">option</span>&gt;
+&lt;<span class="k">option</span>&gt;Presse quotidienne nationale&lt;/<span class="k">option</span>&gt;
+&lt;<span class="k">option</span>&gt;Presse spécialisée&lt;/<span class="k">option</span>&gt;</div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div>Si vous changez les valeurs du champ <strong>Type</strong>, pensez à mettre à jour la logique de la Synthèse comparative (ligne qui contient <code>doc.type === 'Scientifique'</code>) pour que les barres du tableau comparatif restent cohérentes.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">6</div></div>
+        <div class="step-body">
+          <div class="step-tag">Test et validation</div>
+          <h3>Vérifier l'application avant de commencer le codage</h3>
+          <p>Avant de vous lancer dans le codage de l'ensemble de votre corpus, effectuez un test complet avec 1 document et 3 extraits fictifs :</p>
+          <ul class="checklist">
+            <li><span class="check-box"></span>L'onglet <strong>Corpus</strong> enregistre bien un document avec vos nouvelles catégories.</li>
+            <li><span class="check-box"></span>L'onglet <strong>Extraits</strong> génère des ID corrects (ex. <code>001-1</code>).</li>
+            <li><span class="check-box"></span>L'onglet <strong>Codage</strong> affiche bien vos nouvelles dimensions, questions et indicateurs.</li>
+            <li><span class="check-box"></span>Les options de codage correspondent à vos choix théoriques.</li>
+            <li><span class="check-box"></span>L'onglet <strong>Synthèse</strong> affiche des barres après avoir codé au moins 1 extrait.</li>
+            <li><span class="check-box"></span>L'export <strong>codage_enrichi.csv</strong> s'ouvre correctement dans Jamovi ou Excel.</li>
+            <li><span class="check-box"></span>La <strong>sauvegarde JSON</strong> fonctionne (Export → Sauvegarder tout) et peut être restaurée.</li>
+          </ul>
+          <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div><strong>Double codage.</strong> Si un second codeur participe à la recherche, partagez l'URL GitHub Pages : il peut coder sur sa propre machine et vous envoyer son fichier JSON. Comparez ensuite les deux codages pour calculer le Kappa de Cohen dans Jamovi.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 7 -->
+      <div class="step">
+        <div class="step-num-col"><div class="step-num">7</div></div>
+        <div class="step-body">
+          <div class="step-tag">Attribution &amp; publication</div>
+          <h3>Mettre à jour le titre et conserver l'attribution</h3>
+          <p>Personnalisez le titre de l'application pour votre recherche en modifiant la balise <code>&lt;title&gt;</code> et le texte du <code>.brand</code> dans le <code>&lt;header&gt;</code>. Vous pouvez ajouter votre propre nom :</p>
+          <div class="code-label">Exemple — Personnalisation du titre</div>
+          <div class="code-block"><span class="co">&lt;!-- Titre dans l'onglet du navigateur --&gt;</span>
+&lt;<span class="k">title</span>&gt;PAC — Analyse Presse Scolaire&lt;/<span class="k">title</span>&gt;
+
+<span class="co">&lt;!-- Bandeau en haut de l'application --&gt;</span>
+&lt;<span class="k">div</span> class=<span class="s">"brand"</span>&gt;
+  PAC &lt;<span class="k">span</span>&gt;— Analyse Presse Scolaire · <span class="v">Dupont (2026)</span> · d'après Lamolet (2026)&lt;/<span class="k">span</span>&gt;
+&lt;/<span class="k">div</span>&gt;</div>
+
+          <div class="callout callout-legal">
+            <span class="callout-icon">⚖️</span>
+            <div>La mention <strong>« d'après Lamolet (2026) »</strong> ou <strong>« adapté de Lamolet (2026) »</strong> est obligatoire dans le bandeau de l'application <em>et</em> dans toute publication scientifique utilisant l'outil ou les données produites. Voir la section Licence ci-dessous.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /steps -->
+  </div>
+</div>
+
+<!-- ── SECTION : EXPORT ── -->
+<div class="section">
+  <div class="container">
+    <div class="section-eyebrow">Utilisation des données exportées</div>
+    <h2>Analyser les CSV dans Jamovi ou Sphinx</h2>
+    <p class="lead">La PAC produit 4 fichiers CSV. Voici comment les utiliser dans les logiciels d'analyse courants en SHS.</p>
+
+    <div class="intro-grid">
+      <div class="intro-card">
+        <h3>📊 Dans Jamovi</h3>
+        <p>Ouvrez directement le fichier <strong>codage_enrichi.csv</strong> (Fichier → Ouvrir). Toutes les variables sont présentes dans une seule table. Utilisez <em>Analyses → Fréquences</em> pour les tris à plat et <em>Analyses → Test du χ²</em> pour les comparaisons entre types de sources.</p>
+      </div>
+      <div class="intro-card">
+        <h3>📋 Dans Sphinx</h3>
+        <p>Importez <strong>codage.csv</strong> comme base de données d'une enquête. Chaque colonne D1–D6 correspond à une variable catégorielle. Effectuez des tris à plat par dimension, puis des tris croisés (Type × D1, Période × D3, etc.).</p>
+      </div>
+      <div class="intro-card">
+        <h3>🔗 Jointure manuelle</h3>
+        <p>Si vous travaillez dans R ou Python, importez <strong>corpus.csv</strong> et <strong>codage.csv</strong> séparément et rejoignez-les sur <code>ID_Doc</code>. Cela reproduit exactement la logique du fichier <em>enrichi</em>.</p>
+      </div>
+      <div class="intro-card">
+        <h3>💾 Sauvegarde longue durée</h3>
+        <p>Le fichier JSON (Export → Sauvegarder tout) conserve <em>l'intégralité</em> de vos données, y compris les textes des extraits. Exportez-le régulièrement. Les CSV, eux, ne contiennent que les données structurées.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SECTION : LEGAL ── -->
+<div class="section" id="legal">
+  <div class="container">
+    <div class="section-eyebrow">Propriété intellectuelle</div>
+    <h2>Licence d'utilisation et attribution</h2>
+    <p class="lead">La PAC est mise à disposition de la communauté scientifique dans un esprit de partage et de reproductibilité. Son utilisation implique quelques engagements simples.</p>
+
+    <div class="legal-banner">
+      <h3>Comment citer la PAC dans vos travaux</h3>
+      <p>Toute publication, communication ou rapport utilisant la PAC ou les données qu'elle a permis de produire doit inclure la mention suivante :</p>
+      <div class="credit">
+        Lamolet (2026). <em>PAC — Plateforme d'Analyse de Corpus</em> [outil de codage en ligne, GitHub Pages]. Développé dans le cadre d'une recherche sur le décrochage scolaire en lycée professionnel.
+      </div>
+      <p style="margin-top:1rem; font-size:.83rem;">Dans le code source de toute version adaptée, la ligne suivante doit apparaître dans le bandeau principal : <code style="background:rgba(255,255,255,.1);padding:.1rem .4rem;border-radius:3px">· d'après Lamolet (2026)</code></p>
+    </div>
+
+    <div class="callout callout-tip" style="margin-top:1.5rem;">
+      <span class="callout-icon">🤝</span>
+      <div>Vous avez adapté la PAC à un corpus original et vos résultats vous semblent utiles à la communauté ? N'hésitez pas à signaler votre travail via un <em>issue</em> ou un <em>fork</em> sur le dépôt d'origine. La science avance mieux à plusieurs.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  PAC — Plateforme d'Analyse de Corpus · <strong style="color:#A8BFD4">Lamolet (2026)</strong> · Protocole de réutilisation v1.0
+</footer>
+
+</body>
+</html>
