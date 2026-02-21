@@ -6,7 +6,7 @@ Mon approche combine l'analyse de corpus scientifiques et institutionnels avec d
 
 ---
 
-**Protocole - Test d'Associations Verbales (TAV)**
+**Plateforme du Test d'Associations Verbales (TAV)**
 
 Protocole d'un Test d'Associations Verbales en ligne pour explorer les représentations sociales des professionnels du secondaire.
 
@@ -16,11 +16,13 @@ Protocole d'un Test d'Associations Verbales en ligne pour explorer les représen
 
 ---
 
-**Protocole - Analyse de Corpus (ADC)**
+**Plateforme d'Analyse de Corpus (PAC)**
 
 Protocole d'une Analyse de Corpus en ligne pour explorer les représentations sociales d'une revue de littérature scientifique.
 
-**→ [Accéder au Protocole ADC](https://perilordinaire.github.io/adc-protocole-v1.html)**
+**→ [Accéder au Protocole PAC](https://perilordinaire.github.io/adc-protocole-v1.html)**
+
+**→ [Accéder au PAC - Raccrochage Scolaire](https://perilordinaire.github.io/adc-protocole-v1.html)**
 
 ---
 
