@@ -29,7 +29,7 @@ Conception de PAC (Lamolet, 2026), une plateforme coopérative d'analyse de corp
 
 **ExtraScope**
 
-Conception d'ExtraScope (Lamolet,2026), un outil d'extraction d'extraits dans un document d'après un paramétrage libre d'occurrences présentes dans une fouchette de mots. 
+Conception d'ExtraScope (Lamolet, 2026), un outil d'extraction d'extraits dans un document d'après un paramétrage libre d'occurrences présentes dans une fouchette de mots. 
 
 **→ [ExtraScope](https://perilordinaire.github.io/extrascope.html)**
 
