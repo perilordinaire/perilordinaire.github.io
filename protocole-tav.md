@@ -1,6 +1,6 @@
 # Guide de réutilisation du TAV
 
-**Vous souhaitez utiliser cet outil pour votre propre recherche ?** Excellente nouvelle : le code est ouvert et adaptable ! Suivez ce guide étape par étape pour créer votre propre Test d'Associations Verbales.
+**Vous souhaitez utiliser cet outil pour votre propre recherche ?** Suivez ce guide étape par étape pour créer votre propre Test d'Associations Verbales.
 
 ---
 
