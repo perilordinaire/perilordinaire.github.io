@@ -18,7 +18,7 @@ Traduction numérique d'un Test d'Associations Verbales pour explorer les repré
 
 **Plateforme d'Analyse de Corpus (PAC)**
 
-Codage d'une Plateforme d'Analyse de Corpus en ligne pour explorer les représentations sociales d'une revue de littérature scientifique.
+Conception d'une Plateforme d'Analyse de Corpus en ligne pour explorer les représentations sociales d'une revue de littérature scientifique.
 
 **→ [Accéder au Protocole PAC](https://perilordinaire.github.io/pac-protocole-v1.html)**
 
