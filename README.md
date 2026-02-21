@@ -31,4 +31,4 @@ Conception d'une Plateforme d'Analyse de Corpus en ligne pour identifier les obs
 
 ---
 
-*péril ordinaire fait référence au classement national des immeubles en "péril non immédiat" - un oxymore à l'image de notre système éducatif*
+*"péril ordinaire" fait référence au classement national des immeubles en "péril non immédiat" - un oxymore à l'image de notre système éducatif*
