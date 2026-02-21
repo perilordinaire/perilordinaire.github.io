@@ -27,3 +27,7 @@ Conception d'une Plateforme d'Analyse de Corpus en ligne pour explorer les repr�
 ---
 
 **Contact :** ferdinand.lamolet@univ-amu.fr
+
+---
+
+*"Péril Ordinaire" fait référence au classement marseillais des immeubles en "péril non immédiat" —  un oxymore à l'image de notre système éducatif.*
