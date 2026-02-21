@@ -19,17 +19,19 @@ Traduction numérique d'un Test d'Associations Verbales (Abric, 2003 ; Vergès, 
 
 **Plateforme d'Analyse de Corpus (PAC)**
 
-Conception de PAC, une Plateforme d'Analyse de Corpus en ligne pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique.
+Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique.
 
 **→ [Accéder au Protocole PAC](https://perilordinaire.github.io/pac-protocole.html)**
 
-**→ [Accéder au PAC - Obstacles Épistémologiques et Présupposés Normatifs](https://perilordinaire.github.io/pac-obstacles.html)**
+**→ [Accéder à la PAC - Obstacles et Présupposés](https://perilordinaire.github.io/pac-obstacles.html)**
 
 ---
 
 **ExtraScope**
 
 Conception d'ExtraScope, un outil d'extraction d'extraits dans un document d'après un paramétrage libre d'occurrences présentes dans une fouchette de mots. 
+
+**→ [Accéder à l'ExtraScope](https://perilordinaire.github.io/extrascope.html)**
 
 ---
 
