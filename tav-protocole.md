@@ -1,6 +1,6 @@
-# Guide de réutilisation du TAV
+# Protocole du Test d'Associations Verbales Informatique (TAVI)
 
-**Vous souhaitez utiliser cet outil pour votre propre recherche ?** Suivez ce guide étape par étape pour créer votre propre Test d'Associations Verbales.
+**Suivez ce guide étape par étape pour créer votre propre TAVI.**
 
 ---
 
