@@ -26,7 +26,7 @@ Conception d'une Plateforme d'Analyse de Corpus en ligne pour explorer les repr√
 
 ---
 
-**Contact :** ferdinand.lamolet@univ-amu.fr
+**Contact :** ferdinand.lamolet@etu.univ-amu.fr
 
 ---
 
