@@ -195,7 +195,7 @@ Si vous utilisez cet outil, veuillez conserver les références méthodologiques
 <footer>
     <p>Test d'Associations Verbales (TAV) d'Abric (2003) et Vergès (1992) - Lamolet (2026)</p>
 </footer>
-
+```
 ---
 
 ## Conseils pour votre recherche
