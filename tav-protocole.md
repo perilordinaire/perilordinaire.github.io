@@ -1,6 +1,6 @@
 ## Protocole - Test d'Associations Verbales Informatique
 
-**Suivez ce guide étape par étape pour créer votre propre TAVI.**
+**Suivez ce guide étape par étape pour créer votre propre TAVI !**
 
 ---
 
@@ -19,7 +19,7 @@
 3. **Sélectionnez tout** le code (`Ctrl+A` / `Cmd+A`)
 4. **Copiez** le code (`Ctrl+C` / `Cmd+C`)
 
-Tout le code est dans un seul fichier HTML — c'est voulu pour faciliter la réutilisation !
+Tout le code est dans un seul fichier HTML, c'est voulu pour faciliter la réutilisation !
 
 ---
 
