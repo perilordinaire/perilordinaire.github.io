@@ -1386,6 +1386,26 @@ function generateExtracts() {
 }
 
 // ── RENDER ───────────────────────────────────────────────────
+function getDisplayWindow(c) {
+  if (!c.hits || c.hits.length === 0) return { start: c.start, end: c.end };
+
+  const firstHitAbs  = c.start + c.hits[0].wordIdx;
+  const lastHit      = c.hits[c.hits.length - 1];
+  const lastHitAbsEnd = c.start + lastHit.wordIdx + lastHit.len;
+
+  // Centre du span des occurrences
+  const occCenter = Math.round((firstHitAbs + lastHitAbsEnd) / 2);
+
+  // On garde la même taille de fenêtre
+  const halfWindow = Math.round((c.end - c.start) / 2);
+
+  // Fenêtre recentrée, clampée aux bornes du document
+  const start = Math.max(0, occCenter - halfWindow);
+  const end   = Math.min(allWords.length, occCenter + halfWindow);
+
+  return { start, end };
+}
+  
 function buildExcerptText(c) {
   return allWords.slice(c.start, c.end).map(w => w.word).join(' ');
 }
@@ -1414,8 +1434,13 @@ function renderExtracts() {
   container.innerHTML = '';
 
   selectedExtracts.forEach((c, idx) => {
-    const rawText = buildExcerptText(c);
-    const highlighted = highlightText(rawText, c.hits, c.start);
+    const { start: dispStart, end: dispEnd } = getDisplayWindow(c);
+    const rawText = allWords.slice(dispStart, dispEnd).map(w => w.word).join(' ');
+    const adjustedHits = c.hits.map(h => ({
+  ...h,
+  wordIdx: h.wordIdx + (c.start - dispStart)
+}));
+    const highlighted = highlightText(rawText, adjustedHits, dispStart);
     const hitCount = c.hits.length;
 
     const badgeClass = c.section === 'debut' ? 'badge-debut' :
