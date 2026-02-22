@@ -1,4 +1,4 @@
-# Protocole du Test d'Associations Verbales Informatique (TAVI)
+**Protocole du Test d'Associations Verbales Informatique (TAVI)**
 
 **Suivez ce guide étape par étape pour créer votre propre TAVI.**
 
@@ -193,7 +193,7 @@ Si vous utilisez cet outil, veuillez conserver les références méthodologiques
 
 ```html
 <footer>
-    <p>Test d'Associations Verbales (TAV) d'Abric (2003) et Vergès (1992) - Lamolet (2026)</p>
+    <p>Test d'Associations Verbales (TAV) d'après Abric (2003) et Vergès (1992) - Lamolet (2026)</p>
 </footer>
 ```
 ---
