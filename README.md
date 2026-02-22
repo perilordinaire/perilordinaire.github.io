@@ -34,7 +34,7 @@ Conception de PAC, une plateforme coopérative d'analyse et de codage de corpus 
 
 **ExtraScope**
 
-Conception d'ExtraScope, un outil en ligne de sélection randomisée d'extraits sur le début, le milieu, et la fin d'un pdf. Le paramétrage du nombre d'occurrences et de l'étandue de la fourchette de mots est libre.
+Conception d'ExtraScope, un outil en ligne de sélection randomisée d'extraits sur le début, le milieu, et la fin d'un PDF. Le paramétrage du nombre d'occurrences et de l'étandue de la fourchette de mots est libre.
 
 🔭 [Application ExtraScope](https://perilordinaire.github.io/extrascope.html)
 
