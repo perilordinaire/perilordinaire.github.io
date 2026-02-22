@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> ExtraScope - sélecteur randomisé d'extraits exigeants</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+  :root {
+    --bg: #f5f1eb;
+    --surface: #faf8f4;
+    --surface2: #ede9e1;
+    --ink: #1c1a17;
+    --ink2: #4a4540;
+    --ink3: #7a7268;
+    --accent: #2d5a6b;
+    --accent2: #1a3a47;
+    --accent-light: #d4e8ef;
+    --gold: #b08a3e;
+    --gold-light: #f0e4c4;
+    --red: #8b3a3a;
+    --green: #3a6e4a;
+    --border: #d4cec4;
+    --shadow: 0 2px 12px rgba(28,26,23,0.08);
+    --shadow-lg: 0 8px 40px rgba(28,26,23,0.12);
+    --radius: 8px;
+    --radius-lg: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--accent2);
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+  }
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .header-brand:hover .brand-lemon { transform: rotate(-12deg) scale(1.15); }
+  .brand-lemon {
+    font-size: 1.5rem;
+    line-height: 1;
+    display: block;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    flex-shrink: 0;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.3));
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: #fff;
+    letter-spacing: 0.02em;
+  }
+  header p {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.6);
+    font-weight: 300;
+  }
+  .step-indicators {
+    margin-left: auto;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .step-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    transition: all 0.3s;
+  }
+  .step-dot.active { background: var(--gold); transform: scale(1.4); }
+  .step-dot.done { background: rgba(255,255,255,0.6); }
+  .step-dot.reachable { cursor: pointer; }
+  .step-dot.reachable:hover { transform: scale(1.7); background: rgba(255,255,255,0.9); }
+  .step-dot.active.reachable:hover { background: var(--gold); }
+
+  /* HOME BUTTON */
+  .home-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    color: var(--ink3);
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+    padding: 0.3rem 0;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s;
+  }
+  .home-btn:hover { color: var(--accent); }
+
+  /* DENSITY MAP */
+  .density-map { margin-bottom: 1.5rem; }
+  .density-map-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 0.6rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .density-track {
+    position: relative;
+    height: 28px;
+    background: var(--surface2);
+    border-radius: 6px;
+    overflow: visible;
+    border: 1px solid var(--border);
+  }
+  .density-section {
+    position: absolute; top: 0; bottom: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.62rem; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: rgba(0,0,0,0.35);
+  }
+  .density-section.debut  { left:0; width:33.3%; background:rgba(176,138,62,0.18); border-right:1px solid var(--border); border-radius:6px 0 0 6px; }
+  .density-section.milieu { left:33.3%; width:33.4%; background:rgba(58,110,74,0.15); border-right:1px solid var(--border); }
+  .density-section.fin    { left:66.6%; width:33.4%; background:rgba(139,58,58,0.15); border-radius:0 6px 6px 0; }
+  .density-marker {
+    position: absolute; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    cursor: default; transition: transform 0.15s; z-index: 2;
+  }
+  .density-marker:hover { transform: translate(-50%, -50%) scale(1.6); }
+  .density-marker.debut  { background: var(--gold); }
+  .density-marker.milieu { background: var(--green); }
+  .density-marker.fin    { background: var(--red); }
+
+  /* EXPORT BAR */
+  .export-bar {
+    display: flex; gap: 0.6rem; flex-wrap: wrap;
+    margin-bottom: 1.5rem; padding: 1rem 1.2rem;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); align-items: center;
+  }
+  .export-bar-label {
+    font-size: 0.75rem; color: var(--ink3); font-weight: 500;
+    margin-right: auto; text-transform: uppercase; letter-spacing: 0.08em;
+  }
+
+  /* MAIN CONTAINER */
+  main {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  /* STEP PANELS */
+  .step-panel {
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  .step-panel.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-header {
+    margin-bottom: 2rem;
+  }
+  .step-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+  .step-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .step-header p {
+    margin-top: 0.5rem;
+    color: var(--ink3);
+    font-size: 0.92rem;
+    max-width: 560px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.8rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 1.2rem;
+  }
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .card-title::before {
+    content: '';
+    display: block;
+    width: 16px; height: 2px;
+    background: var(--gold);
+    border-radius: 2px;
+  }
+
+  /* DROP ZONE */
+  .drop-zone {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius-lg);
+    padding: 3.5rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .drop-zone::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(45,90,107,0.04), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .drop-zone:hover, .drop-zone.drag-over {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  .drop-zone:hover::before, .drop-zone.drag-over::before { opacity: 1; }
+  .drop-icon {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+    display: block;
+    opacity: 0.5;
+  }
+  .drop-zone h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+    color: var(--ink2);
+  }
+  .drop-zone p { color: var(--ink3); font-size: 0.85rem; }
+  .drop-zone input[type=file] {
+    position: absolute; inset: 0;
+    opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    margin-top: 1.5rem;
+    display: none;
+  }
+  .progress-wrap.visible { display: block; }
+  .progress-label {
+    font-size: 0.8rem;
+    color: var(--ink3);
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  .progress-track {
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+  .file-info {
+    display: none;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    background: var(--accent-light);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    margin-top: 1rem;
+    font-size: 0.87rem;
+  }
+  .file-info.visible { display: flex; }
+  .file-info strong { color: var(--accent2); }
+  .file-badge {
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  /* FORM ELEMENTS */
+  .form-grid { display: grid; gap: 1.2rem; }
+  .form-grid-2 { grid-template-columns: 1fr 1fr; }
+  .form-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 600px) {
+    .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; }
+  }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink2);
+    letter-spacing: 0.02em;
+  }
+  label span {
+    color: var(--ink3);
+    font-weight: 300;
+    font-size: 0.75rem;
+  }
+  input[type=text], input[type=number], textarea {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.6rem 0.8rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--ink);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(45,90,107,0.12);
+  }
+  textarea { resize: vertical; min-height: 90px; }
+  .help-text {
+    font-size: 0.75rem;
+    color: var(--ink3);
+    line-height: 1.4;
+  }
+
+  /* RANGE SLIDER */
+  .range-wrap { position: relative; }
+  input[type=range] {
+    width: 100%;
+    appearance: none;
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--surface);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: var(--ink3);
+    margin-top: 0.3rem;
+  }
+  .range-value {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* TAGS INPUT */
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0.5rem;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    min-height: 42px;
+    cursor: text;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    align-items: center;
+  }
+  .tags-container:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(45,90,107,0.12);
+  }
+  .tag {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 4px;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.8rem;
+    font-family: 'DM Mono', monospace;
+    animation: tagIn 0.2s ease;
+  }
+  @keyframes tagIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .tag-remove {
+    cursor: pointer;
+    opacity: 0.7;
+    font-size: 0.7rem;
+    line-height: 1;
+    border: none;
+    background: none;
+    color: #fff;
+    padding: 0;
+  }
+  .tag-remove:hover { opacity: 1; }
+  .tags-input {
+    border: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.87rem;
+    color: var(--ink);
+    outline: none;
+    flex: 1;
+    min-width: 120px;
+    padding: 0.2rem 0.3rem;
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(45,90,107,0.25);
+  }
+  .btn-primary:hover { background: var(--accent2); box-shadow: 0 4px 16px rgba(45,90,107,0.35); }
+  .btn-secondary {
+    background: var(--surface);
+    color: var(--ink2);
+    border: 1.5px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-gold {
+    background: var(--gold);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(176,138,62,0.3);
+  }
+  .btn-gold:hover { background: #9a7a34; }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn-group { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
+  /* STAT BOX */
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+  @media (max-width: 500px) { .stats-grid { grid-template-columns: 1fr; } }
+  .stat-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.2rem;
+    text-align: center;
+  }
+  .stat-box .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+    display: block;
+  }
+  .stat-box .stat-label {
+    font-size: 0.73rem;
+    color: var(--ink3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 0.3rem;
+    display: block;
+  }
+
+  /* SECTION SLIDERS */
+  .section-selectors { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  @media (max-width: 500px) { .section-selectors { grid-template-columns: 1fr; } }
+  .section-selector {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.4rem;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .section-selector:has(input:focus) { border-color: var(--accent); }
+  .section-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+  .section-selector h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+  }
+  .section-selector .avail {
+    font-size: 0.75rem;
+    color: var(--ink3);
+    margin-bottom: 0.8rem;
+  }
+  .section-selector input[type=number] {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    padding: 0.4rem;
+    max-width: 80px;
+  }
+
+  /* EXCERPTS */
+  .excerpt-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .excerpt-header {
+    background: var(--accent2);
+    color: #fff;
+    padding: 0.8rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+  .excerpt-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .excerpt-badge {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+  }
+  .badge-debut { background: rgba(176,138,62,0.8); }
+  .badge-milieu { background: rgba(58,110,74,0.8); }
+  .badge-fin { background: rgba(139,58,58,0.8); }
+  .excerpt-meta {
+    margin-left: auto;
+    font-size: 0.75rem;
+    opacity: 0.75;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .excerpt-body {
+    padding: 1.4rem 1.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--ink2);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .excerpt-body mark {
+    background: var(--gold-light);
+    color: var(--accent2);
+    font-weight: 500;
+    padding: 0.05em 0.15em;
+    border-radius: 3px;
+    border-bottom: 2px solid var(--gold);
+  }
+  .excerpt-footer {
+    border-top: 1px solid var(--border);
+    padding: 0.7rem 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface2);
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+  .excerpt-stats {
+    font-size: 0.75rem;
+    color: var(--ink3);
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .excerpt-stats span { display: flex; align-items: center; gap: 0.3rem; }
+  .copy-btn {
+    font-size: 0.78rem;
+    padding: 0.4rem 0.9rem;
+  }
+
+  /* COPY ALL AREA */
+  .copy-all-section {
+    position: sticky;
+    bottom: 1.5rem;
+    z-index: 50;
+    text-align: center;
+    pointer-events: none;
+  }
+  .copy-all-section .btn {
+    pointer-events: all;
+    box-shadow: 0 8px 32px rgba(45,90,107,0.4);
+    padding: 0.9rem 2rem;
+    font-size: 0.95rem;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--ink);
+    color: #fff;
+    padding: 0.7rem 1.5rem;
+    border-radius: 40px;
+    font-size: 0.85rem;
+    z-index: 999;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ALERT */
+  .alert {
+    padding: 0.9rem 1.1rem;
+    border-radius: var(--radius);
+    font-size: 0.87rem;
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+  .alert-info { background: var(--accent-light); border: 1px solid var(--accent); color: var(--accent2); }
+  .alert-warn { background: var(--gold-light); border: 1px solid var(--gold); color: #6b5020; }
+  .alert-ok { background: #d4edd9; border: 1px solid var(--green); color: var(--green); }
+  .alert-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.05rem; }
+
+  /* SEPARATOR */
+  .sep {
+    height: 1px;
+    background: var(--border);
+    margin: 1.5rem 0;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--surface2); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--ink3); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-brand" onclick="goHome()" title="Retour à l'accueil">
+    <span class="brand-lemon">🍋</span>
+    <div>
+      <h1>ExtraScope</h1>
+      <p>sélecteur randomisé d'extraits exigeants - Lamolet (2026)</p>
+    </div>
+  </div>
+  <div class="step-indicators" id="stepDots">
+    <div class="step-dot active" data-step="1" onclick="tryGoTo(1)" title="Étape 1 — Chargement"></div>
+    <div class="step-dot" data-step="2" onclick="tryGoTo(2)" title="Étape 2 — Paramètres"></div>
+    <div class="step-dot" data-step="3" onclick="tryGoTo(3)" title="Étape 3 — Résultats"></div>
+    <div class="step-dot" data-step="4" onclick="tryGoTo(4)" title="Étape 4 — Sélection"></div>
+    <div class="step-dot" data-step="5" onclick="tryGoTo(5)" title="Étape 5 — Extraits"></div>
+  </div>
+</header>
+
+<main>
+
+  <!-- STEP 1: UPLOAD -->
+  <div class="step-panel active" id="step1">
+    <div class="step-header">
+      <div class="step-label">Étape 1 sur 5</div>
+      <h2>Chargement du document</h2>
+      <p>Téléversez un fichier PDF. Le texte sera extrait localement dans votre navigateur.</p>
+    </div>
+
+    <div class="card">
+      <div class="drop-zone" id="dropZone">
+        <input type="file" id="fileInput" accept=".pdf" />
+        <span class="drop-icon">📄</span>
+        <h3>Déposez votre PDF ici</h3>
+        <p>ou cliquez pour parcourir vos fichiers</p>
+      </div>
+
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-label">
+          <span id="progressText">Extraction du texte…</span>
+          <span id="progressPct">0%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+
+      <div class="file-info" id="fileInfo">
+        <div class="file-badge">PDF</div>
+        <div>
+          <strong id="fileName">—</strong><br>
+          <span id="fileStats" style="font-size:0.78rem;color:var(--ink3)">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-info">
+      <div class="alert-icon">ℹ️</div>
+      <div>Traitement entièrement côté navigateur avec PDF.js. Fonctionne avec tout PDF dont le texte est sélectionnable.</div>
+    </div>
+
+    <div class="btn-group" style="justify-content:flex-end">
+      <button class="btn btn-primary" id="btn1Next" disabled onclick="goTo(2)">
+        Configurer la recherche →
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 2: PARAMETERS -->
+  <div class="step-panel" id="step2">
+    <button class="home-btn" onclick="goHome()">🍋 Accueil</button>
+    <div class="step-header">
+      <div class="step-label">Étape 2 sur 5</div>
+      <h2>Paramètres de recherche</h2>
+      <p>Définissez les occurrences à chercher et les critères pour qu'un extrait soit retenu.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Occurrences recherchées</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Termes à trouver <span>— Appuyez sur Entrée pour ajouter</span></label>
+          <div class="tags-container" id="tagsContainer">
+            <input class="tags-input" id="tagsInput" type="text" placeholder="ex : décrochage scolaire…" />
+          </div>
+          <div class="help-text">Chaque terme peut être un mot ou une expression. La recherche est insensible à la casse et aux accents.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Critères de sélection d'un extrait</div>
+      <div class="form-grid form-grid-2">
+
+        <div class="form-group">
+          <label>Longueur minimale <span id="lenMinVal">— <span class="range-value">200</span> mots</span></label>
+          <input type="range" id="lenMin" min="50" max="500" value="200" step="10"
+            oninput="syncRange(this,'lenMinVal','lenMin','lenMax')">
+          <div class="range-labels"><span>50</span><span>500</span></div>
+        </div>
+
+        <div class="form-group">
+          <label>Longueur maximale <span id="lenMaxVal">— <span class="range-value">400</span> mots</span></label>
+          <input type="range" id="lenMax" min="50" max="600" value="400" step="10"
+            oninput="syncRange(this,'lenMaxVal','lenMax','lenMin')">
+          <div class="range-labels"><span>50</span><span>600</span></div>
+        </div>
+
+        <div class="form-group">
+          <label>Nombre minimum d'occurrences <span id="minOccVal">— <span class="range-value">2</span></span></label>
+          <input type="range" id="minOcc" min="1" max="10" value="2" step="1"
+            oninput="syncRangeSimple(this,'minOccVal')">
+          <div class="range-labels"><span>1</span><span>10</span></div>
+          <label style="flex-direction:row;align-items:center;gap:0.5rem;margin-top:0.5rem;cursor:pointer;font-weight:400;">
+            <input type="checkbox" id="diffTerms" checked style="width:auto;accent-color:var(--accent);cursor:pointer;">
+            Occurrences de <strong>termes différents</strong> uniquement
+          </label>
+          <div class="help-text">Coché : chaque occurrence doit correspondre à un terme <em>distinct</em> — évite qu'un même mot répété deux fois suffise à valider l'extrait.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Écart maximal entre occurrences <span id="maxDistVal">— <span class="range-value">100</span> mots</span></label>
+          <input type="range" id="maxDist" min="20" max="400" value="100" step="10"
+            oninput="syncRangeSimple(this,'maxDistVal')">
+          <div class="range-labels"><span>20</span><span>400</span></div>
+          <div class="help-text">Distance maximale (en mots) entre la 1ʳᵉ et la dernière occurrence dans l'extrait.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Options avancées</div>
+      <div class="form-grid form-grid-2">
+        <div class="form-group">
+          <label>Chevauchement d'extraits</label>
+          <select id="overlapMode" style="background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);padding:0.6rem 0.8rem;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--ink);width:100%">
+            <option value="no">Aucun chevauchement (recommandé)</option>
+            <option value="half">Chevauchement de 50%</option>
+            <option value="any">Autoriser tout chevauchement</option>
+          </select>
+          <div class="help-text">Éviter les extraits trop similaires.</div>
+        </div>
+        <div class="form-group">
+          <label>Découpage préféré</label>
+          <select id="splitMode" style="background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);padding:0.6rem 0.8rem;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--ink);width:100%">
+            <option value="sentence">Aux frontières de phrase</option>
+            <option value="word">Fenêtre glissante (mots)</option>
+          </select>
+          <div class="help-text">Découper aux phrases produit des extraits plus naturels.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-group" style="justify-content:space-between">
+      <button class="btn btn-secondary" onclick="goTo(1)">← Retour</button>
+      <button class="btn btn-primary" id="btn2Next" onclick="runAnalysis()">
+        Analyser le document →
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 3: RESULTS SUMMARY -->
+  <div class="step-panel" id="step3">
+    <button class="home-btn" onclick="goHome()">🍋 Accueil</button>
+    <div class="step-header">
+      <div class="step-label">Étape 3 sur 5</div>
+      <h2>Résultats de l'analyse</h2>
+      <p>Voici combien d'extraits éligibles ont été identifiés dans votre document.</p>
+    </div>
+
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-box">
+        <span class="stat-num" id="statTotal">—</span>
+        <span class="stat-label">Extraits trouvés</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="statPages">—</span>
+        <span class="stat-label">Pages analysées</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="statWords">—</span>
+        <span class="stat-label">Mots au total</span>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-box">
+        <span class="stat-num" id="statDebut">—</span>
+        <span class="stat-label">En début</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="statMilieu">—</span>
+        <span class="stat-label">Au milieu</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="statFin">—</span>
+        <span class="stat-label">En fin</span>
+      </div>
+    </div>
+
+    <div id="alertZone3" class="alert alert-info">
+      <div class="alert-icon">ℹ️</div>
+      <div id="alertMsg3">Analyse en cours…</div>
+    </div>
+
+    <div class="btn-group" style="justify-content:space-between">
+      <button class="btn btn-secondary" onclick="goTo(2)">← Modifier les paramètres</button>
+      <button class="btn btn-primary" id="btn3Next" onclick="goTo(4)">
+        Sélectionner les extraits →
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 4: SELECTION -->
+  <div class="step-panel" id="step4">
+    <button class="home-btn" onclick="goHome()">🍋 Accueil</button>
+    <div class="step-header">
+      <div class="step-label">Étape 4 sur 5</div>
+      <h2>Combien d'extraits ?</h2>
+      <p>Choisissez combien d'extraits du début, du milieu et de la fin vous souhaitez obtenir. La sélection est aléatoire parmi les candidats éligibles.</p>
+    </div>
+
+    <div class="card">
+      <div class="section-selectors">
+        <div class="section-selector">
+          <div class="section-icon">📖</div>
+          <h4>Début</h4>
+          <div class="avail" id="availDebut">disponibles : —</div>
+          <input type="number" id="selDebut" min="0" value="1" style="width:80px">
+        </div>
+        <div class="section-selector">
+          <div class="section-icon">📚</div>
+          <h4>Milieu</h4>
+          <div class="avail" id="availMilieu">disponibles : —</div>
+          <input type="number" id="selMilieu" min="0" value="1" style="width:80px">
+        </div>
+        <div class="section-selector">
+          <div class="section-icon">📕</div>
+          <h4>Fin</h4>
+          <div class="avail" id="availFin">disponibles : —</div>
+          <input type="number" id="selFin" min="0" value="1" style="width:80px">
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-warn">
+      <div class="alert-icon">🎲</div>
+      <div>La sélection est <strong>aléatoire</strong> parmi les extraits éligibles de chaque section — conformément aux bonnes pratiques pour éviter les biais de confirmation (Krippendorff, 2004).</div>
+    </div>
+
+    <div class="btn-group" style="justify-content:space-between">
+      <button class="btn btn-secondary" onclick="goTo(3)">← Retour</button>
+      <button class="btn btn-gold" onclick="generateExtracts()">
+        Générer les extraits ✨
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 5: EXTRACTS -->
+  <div class="step-panel" id="step5">
+    <button class="home-btn" onclick="goHome()">🍋 Accueil</button>
+    <div class="step-header">
+      <div class="step-label">Étape 5 sur 5</div>
+      <h2>Extraits sélectionnés</h2>
+      <p>Les occurrences sont <mark style="background:var(--gold-light);color:var(--accent2);padding:0.1em 0.2em;border-radius:3px;border-bottom:2px solid var(--gold)">surlignées</mark>. Copiez chaque extrait ou exportez tout d'un coup.</p>
+    </div>
+
+    <div class="density-map">
+      <div class="density-map-label">
+        <span>Position des extraits dans le document</span>
+        <span style="display:flex;gap:0.8rem;font-weight:400;">
+          <span style="color:var(--gold)">● Début</span>
+          <span style="color:var(--green)">● Milieu</span>
+          <span style="color:var(--red)">● Fin</span>
+        </span>
+      </div>
+      <div class="density-track" id="densityTrack">
+        <div class="density-section debut">Début</div>
+        <div class="density-section milieu">Milieu</div>
+        <div class="density-section fin">Fin</div>
+      </div>
+    </div>
+
+    <div class="export-bar">
+      <span class="export-bar-label">Exporter</span>
+      <button class="btn btn-secondary" style="font-size:0.8rem;padding:0.45rem 1rem;" onclick="copyAll()">📋 Tout copier</button>
+      <button class="btn btn-secondary" style="font-size:0.8rem;padding:0.45rem 1rem;" onclick="exportTxt()">📄 .txt</button>
+      <button class="btn btn-secondary" style="font-size:0.8rem;padding:0.45rem 1rem;" onclick="exportCsv()">📊 .csv</button>
+      <button class="btn btn-gold"      style="font-size:0.8rem;padding:0.45rem 1rem;" onclick="goTo(4)">← Changer la sélection</button>
+    </div>
+
+    <div id="extractsList"></div>
+
+    <div class="copy-all-section">
+      <button class="btn btn-gold" onclick="copyAll()">📋 Tout copier (texte brut)</button>
+    </div>
+  </div>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STATE ────────────────────────────────────────────────────
+let pdfText = [];   // [{text, pageNum}] per page
+let allWords = [];  // [{word, pageNum, globalIdx}]
+let candidates = { debut: [], milieu: [], fin: [] };
+let selectedExtracts = [];
+let searchTerms = [];
+
+// Configure PDF.js worker
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+// ── NAVIGATION ───────────────────────────────────────────────
+let maxReachedStep = 1;
+
+function updateDots(current) {
+  document.querySelectorAll('.step-dot').forEach(d => {
+    const s = parseInt(d.dataset.step);
+    d.classList.remove('active', 'done', 'reachable');
+    if (s === current) d.classList.add('active');
+    if (s < current)  d.classList.add('done');
+    if (s <= maxReachedStep) d.classList.add('reachable');
+  });
+}
+
+function goTo(n) {
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  if (n > maxReachedStep) maxReachedStep = n;
+  updateDots(n);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goHome() { goTo(1); }
+function tryGoTo(n) { if (n <= maxReachedStep) goTo(n); }
+
+// ── FILE UPLOAD ──────────────────────────────────────────────
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  const f = e.dataTransfer.files[0];
+  if (f && f.type === 'application/pdf') processFile(f);
+});
+fileInput.addEventListener('change', () => {
+  if (fileInput.files[0]) processFile(fileInput.files[0]);
+});
+
+async function processFile(file) {
+  const wrap = document.getElementById('progressWrap');
+  const fill = document.getElementById('progressFill');
+  const pct = document.getElementById('progressPct');
+  const txt = document.getElementById('progressText');
+  wrap.classList.add('visible');
+  fill.style.width = '5%';
+  pct.textContent = '5%';
+
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const numPages = pdf.numPages;
+    pdfText = [];
+    allWords = [];
+    let globalIdx = 0;
+
+    for (let i = 1; i <= numPages; i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      const pageText = content.items.map(it => it.str).join(' ');
+      pdfText.push({ text: pageText, pageNum: i });
+
+      // Tokenize into words
+      const words = pageText.split(/\s+/).filter(w => w.length > 0);
+      words.forEach(w => {
+        allWords.push({ word: w, pageNum: i, globalIdx: globalIdx++ });
+      });
+
+      const p = Math.round(5 + (i / numPages) * 90);
+      fill.style.width = p + '%';
+      pct.textContent = p + '%';
+      txt.textContent = `Page ${i} / ${numPages} extraite…`;
+    }
+
+    fill.style.width = '100%';
+    pct.textContent = '100%';
+    txt.textContent = '✓ Extraction terminée';
+
+    const fi = document.getElementById('fileInfo');
+    fi.classList.add('visible');
+    document.getElementById('fileName').textContent = file.name;
+    document.getElementById('fileStats').textContent =
+      `${numPages} pages · ${allWords.length.toLocaleString('fr')} mots`;
+
+    document.getElementById('btn1Next').disabled = false;
+
+    // Add default terms from protocol
+    const defaults = ['décrochage', 'décrocheur', 'raccrochage', 'lycée professionnel', 'abandon scolaire'];
+    if (searchTerms.length === 0) {
+      defaults.forEach(addTag);
+    }
+
+  } catch (err) {
+    txt.textContent = '❌ Erreur : ' + err.message;
+    fill.style.background = 'var(--red)';
+  }
+}
+
+// ── TAGS INPUT ───────────────────────────────────────────────
+function addTag(value) {
+  const v = value.trim();
+  if (!v || searchTerms.includes(v.toLowerCase())) return;
+  searchTerms.push(v.toLowerCase());
+
+  const container = document.getElementById('tagsContainer');
+  const input = document.getElementById('tagsInput');
+  const tag = document.createElement('div');
+  tag.className = 'tag';
+  tag.dataset.term = v.toLowerCase();
+  tag.innerHTML = `${escapeHtml(v)}<button class="tag-remove" onclick="removeTag(this,'${escapeHtml(v.toLowerCase())}')">✕</button>`;
+  container.insertBefore(tag, input);
+}
+
+function removeTag(btn, term) {
+  searchTerms = searchTerms.filter(t => t !== term);
+  btn.parentElement.remove();
+}
+
+document.getElementById('tagsInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    addTag(e.target.value);
+    e.target.value = '';
+  }
+});
+
+document.getElementById('tagsContainer').addEventListener('click', () => {
+  document.getElementById('tagsInput').focus();
+});
+
+// ── RANGE SYNC ───────────────────────────────────────────────
+function syncRange(el, labelId, selfId, otherId) {
+  const label = document.getElementById(labelId);
+  const unit = selfId === 'lenMin' || selfId === 'lenMax' ? ' mots' : '';
+  label.innerHTML = `— <span class="range-value">${el.value}</span>${unit}`;
+  // Enforce min < max
+  if (selfId === 'lenMin' && parseInt(el.value) >= parseInt(document.getElementById('lenMax').value)) {
+    document.getElementById('lenMax').value = parseInt(el.value) + 20;
+    syncRangeSimple(document.getElementById('lenMax'), 'lenMaxVal');
+  }
+  if (selfId === 'lenMax' && parseInt(el.value) <= parseInt(document.getElementById('lenMin').value)) {
+    document.getElementById('lenMin').value = parseInt(el.value) - 20;
+    syncRangeSimple(document.getElementById('lenMin'), 'lenMinVal');
+  }
+}
+
+function syncRangeSimple(el, labelId) {
+  const label = document.getElementById(labelId);
+  const unit = el.id === 'lenMin' || el.id === 'lenMax' ? ' mots' : (el.id === 'maxDist' ? ' mots' : '');
+  label.innerHTML = `— <span class="range-value">${el.value}</span>${unit}`;
+}
+
+// ── ANALYSIS ─────────────────────────────────────────────────
+function normalizeWord(w) {
+  return w.toLowerCase()
+    .replace(/[àâä]/g, 'a')
+    .replace(/[éèêë]/g, 'e')
+    .replace(/[îï]/g, 'i')
+    .replace(/[ôö]/g, 'o')
+    .replace(/[ùûü]/g, 'u')
+    .replace(/[ç]/g, 'c')
+    .replace(/[^a-z0-9\s-]/g, '');
+}
+
+function normalizeText(t) {
+  return normalizeWord(t);
+}
+
+function termMatchAt(words, startIdx, term) {
+  // Check if term (possibly multi-word) matches at words[startIdx]
+  const termWords = term.split(/\s+/);
+  for (let i = 0; i < termWords.length; i++) {
+    if (startIdx + i >= words.length) return false;
+    if (normalizeWord(words[startIdx + i].word) !== normalizeText(termWords[i])) return false;
+  }
+  return true;
+}
+
+function findOccurrences(wordSlice, terms) {
+  // Returns array of {termIdx, wordIdx, length (in words)}
+  const hits = [];
+  for (let i = 0; i < wordSlice.length; i++) {
+    for (let t = 0; t < terms.length; t++) {
+      if (termMatchAt(wordSlice, i, terms[t])) {
+        const len = terms[t].split(/\s+/).length;
+        hits.push({ termIdx: t, wordIdx: i, len });
+        break; // don't double count
+      }
+    }
+  }
+  return hits;
+}
+
+function runAnalysis() {
+  if (searchTerms.length === 0) {
+    showToast('⚠️ Ajoutez au moins un terme à rechercher');
+    return;
+  }
+
+  const lenMin = parseInt(document.getElementById('lenMin').value);
+  const lenMax = parseInt(document.getElementById('lenMax').value);
+  const minOcc = parseInt(document.getElementById('minOcc').value);
+  const diffTerms = document.getElementById('diffTerms').checked;
+  const maxDist = parseInt(document.getElementById('maxDist').value);
+  const overlapMode = document.getElementById('overlapMode').value;
+  const splitMode = document.getElementById('splitMode').value;
+
+  const W = allWords.length;
+  candidates = { debut: [], milieu: [], fin: [] };
+
+  let usedRanges = []; // [{start, end}] for overlap prevention
+
+  // Window step
+  function overlaps(s, e) {
+    for (const r of usedRanges) {
+      const overlap = Math.min(e, r.end) - Math.max(s, r.start);
+      const len = e - s;
+      if (overlapMode === 'no' && overlap > 0) return true;
+      if (overlapMode === 'half' && overlap > len * 0.5) return true;
+    }
+    return false;
+  }
+
+  // Sentence-aware split: find sentence boundaries
+  let sentenceStarts = [0];
+  if (splitMode === 'sentence') {
+    for (let i = 0; i < allWords.length; i++) {
+      if (/[.!?;:]$/.test(allWords[i].word)) {
+        sentenceStarts.push(i + 1);
+      }
+    }
+    sentenceStarts = [...new Set(sentenceStarts)].sort((a, b) => a - b);
+  }
+
+  function findWindowEnd(start, targetMin, targetMax) {
+    // Find end position that gives a word count between targetMin and targetMax
+    if (splitMode === 'sentence') {
+      // Find the sentence start >= start + targetMin
+      let bestEnd = start + targetMin;
+      for (const ss of sentenceStarts) {
+        if (ss >= start + targetMin && ss <= start + targetMax) {
+          bestEnd = ss;
+          break;
+        }
+      }
+      return Math.min(bestEnd, start + targetMax, W);
+    } else {
+      return Math.min(start + Math.floor((targetMin + targetMax) / 2), W);
+    }
+  }
+
+  // Sliding window
+  const step = Math.max(10, Math.floor(lenMin / 3));
+  for (let s = 0; s + lenMin < W; s += step) {
+    const e = findWindowEnd(s, lenMin, lenMax);
+    const wCount = e - s;
+    if (wCount < lenMin || wCount > lenMax + 20) continue;
+    if (overlaps(s, e)) continue;
+
+    const slice = allWords.slice(s, e);
+    const hits = findOccurrences(slice, searchTerms);
+
+    const occCount = diffTerms
+      ? new Set(hits.map(h => h.termIdx)).size
+      : hits.length;
+
+    if (occCount < minOcc) continue;
+
+    // Check max distance between first and last hit
+    const firstHit = hits[0].wordIdx;
+    const lastHit = hits[hits.length - 1].wordIdx + hits[hits.length - 1].len - 1;
+    const dist = lastHit - firstHit;
+    if (dist > maxDist && hits.length >= 2) continue;
+
+    // Determine position in document
+    const midPoint = (s + e) / 2;
+    const relPos = midPoint / W;
+    let section;
+    if (relPos < 0.33) section = 'debut';
+    else if (relPos < 0.67) section = 'milieu';
+    else section = 'fin';
+
+    const pageNum = slice[Math.floor(slice.length / 2)].pageNum;
+
+    candidates[section].push({ start: s, end: e, hits, wCount, pageNum, relPos });
+    usedRanges.push({ start: s, end: e });
+  }
+
+  // Update step 3 UI
+  const total = candidates.debut.length + candidates.milieu.length + candidates.fin.length;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statPages').textContent = pdfText.length;
+  document.getElementById('statWords').textContent = W.toLocaleString('fr');
+  document.getElementById('statDebut').textContent = candidates.debut.length;
+  document.getElementById('statMilieu').textContent = candidates.milieu.length;
+  document.getElementById('statFin').textContent = candidates.fin.length;
+
+  const alert3 = document.getElementById('alertZone3');
+  const msg3 = document.getElementById('alertMsg3');
+  if (total === 0) {
+    alert3.className = 'alert alert-warn';
+    msg3.innerHTML = '⚠️ Aucun extrait trouvé avec ces paramètres. Essayez de réduire le nombre minimum d\'occurrences, d\'augmenter la distance maximale, ou de vérifier vos termes de recherche.';
+    document.getElementById('btn3Next').disabled = true;
+  } else if (total < 5) {
+    alert3.className = 'alert alert-warn';
+    msg3.innerHTML = `Seulement <strong>${total} extraits</strong> trouvés. Vous pouvez affiner les paramètres ou procéder avec ce nombre.`;
+    document.getElementById('btn3Next').disabled = false;
+  } else {
+    alert3.className = 'alert alert-ok';
+    msg3.innerHTML = `✓ <strong>${total} extraits éligibles</strong> trouvés — vous pouvez procéder à la sélection.`;
+    document.getElementById('btn3Next').disabled = false;
+  }
+
+  // Update step 4
+  document.getElementById('availDebut').textContent = `disponibles : ${candidates.debut.length}`;
+  document.getElementById('availMilieu').textContent = `disponibles : ${candidates.milieu.length}`;
+  document.getElementById('availFin').textContent = `disponibles : ${candidates.fin.length}`;
+
+  goTo(3);
+}
+
+// ── RANDOM SELECTION ─────────────────────────────────────────
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function generateExtracts() {
+  const nDebut = parseInt(document.getElementById('selDebut').value) || 0;
+  const nMilieu = parseInt(document.getElementById('selMilieu').value) || 0;
+  const nFin = parseInt(document.getElementById('selFin').value) || 0;
+
+  selectedExtracts = [];
+
+  function pick(section, n, label) {
+    const pool = shuffleArray(candidates[section]);
+    pool.slice(0, n).forEach(c => {
+      selectedExtracts.push({ ...c, section: label });
+    });
+  }
+
+  pick('debut', nDebut, 'debut');
+  pick('milieu', nMilieu, 'milieu');
+  pick('fin', nFin, 'fin');
+
+  if (selectedExtracts.length === 0) {
+    showToast('⚠️ Sélectionnez au moins un extrait');
+    return;
+  }
+
+  renderExtracts();
+  goTo(5);
+}
+
+// ── RENDER ───────────────────────────────────────────────────
+function buildExcerptText(c) {
+  return allWords.slice(c.start, c.end).map(w => w.word).join(' ');
+}
+
+function highlightText(rawText, hits, startIdx) {
+  // Build highlighted HTML
+  const words = allWords.slice(startIdx, startIdx + rawText.split(/\s+/).length);
+  let result = [];
+  let i = 0;
+  while (i < words.length) {
+    const hit = hits.find(h => h.wordIdx === i);
+    if (hit) {
+      const span = words.slice(i, i + hit.len).map(w => escapeHtml(w.word)).join(' ');
+      result.push(`<mark>${span}</mark>`);
+      i += hit.len;
+    } else {
+      result.push(escapeHtml(words[i].word));
+      i++;
+    }
+  }
+  return result.join(' ');
+}
+
+function renderExtracts() {
+  const container = document.getElementById('extractsList');
+  container.innerHTML = '';
+
+  selectedExtracts.forEach((c, idx) => {
+    const rawText = buildExcerptText(c);
+    const highlighted = highlightText(rawText, c.hits, c.start);
+    const hitCount = c.hits.length;
+
+    const badgeClass = c.section === 'debut' ? 'badge-debut' :
+                       c.section === 'milieu' ? 'badge-milieu' : 'badge-fin';
+    const sectionLabel = c.section === 'debut' ? 'Début' :
+                         c.section === 'milieu' ? 'Milieu' : 'Fin';
+
+    const posPercent = Math.round(c.relPos * 100);
+
+    const card = document.createElement('div');
+    card.className = 'excerpt-card';
+    card.innerHTML = `
+      <div class="excerpt-header">
+        <span class="excerpt-num">Extrait ${idx + 1}</span>
+        <span class="excerpt-badge ${badgeClass}">${sectionLabel} du document</span>
+        <div class="excerpt-meta">
+          <span>📄 p. ${c.pageNum}</span>
+          <span>📍 ~${posPercent}% du doc.</span>
+          <span>📝 ${c.wCount} mots</span>
+        </div>
+      </div>
+      <div class="excerpt-body">${highlighted}</div>
+      <div class="excerpt-footer">
+        <div class="excerpt-stats">
+          <span>🔍 <strong>${hitCount}</strong> occurrence${hitCount > 1 ? 's' : ''}</span>
+          <span>📖 <strong>${c.wCount}</strong> mots</span>
+          <span>📄 Page <strong>${c.pageNum}</strong></span>
+        </div>
+        <button class="btn btn-secondary copy-btn" onclick="copyExcerpt(${idx})">
+          📋 Copier
+        </button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  // Density map
+  const track = document.getElementById('densityTrack');
+  track.querySelectorAll('.density-marker').forEach(m => m.remove());
+  selectedExtracts.forEach((c, idx) => {
+    const marker = document.createElement('div');
+    marker.className = `density-marker ${c.section}`;
+    marker.style.left = `${Math.round(c.relPos * 100)}%`;
+    marker.title = `Extrait ${idx + 1} — p. ${c.pageNum} (~${Math.round(c.relPos * 100)}%)`;
+    track.appendChild(marker);
+  });
+}
+
+// ── EXPORTS ──────────────────────────────────────────────────
+function exportTxt() {
+  let text = `EXTRAITS — ExtraScope\nTermes : ${searchTerms.join(', ')}\nDate : ${new Date().toLocaleDateString('fr-FR')}\n${'═'.repeat(60)}\n\n`;
+  selectedExtracts.forEach((c, idx) => {
+    const section = c.section === 'debut' ? 'Début' : c.section === 'milieu' ? 'Milieu' : 'Fin';
+    const termes = [...new Set(c.hits.map(h => searchTerms[h.termIdx]))].join(', ');
+    text += `EXTRAIT ${idx + 1} | ${section} | Page ${c.pageNum} | ~${Math.round(c.relPos*100)}% | ${c.wCount} mots | Termes : ${termes}\n${'─'.repeat(40)}\n${buildExcerptText(c)}\n${'═'.repeat(60)}\n\n`;
+  });
+  downloadFile('extrascope_extraits.txt', text, 'text/plain');
+}
+
+function exportCsv() {
+  const rows = [['#','Section','Page','Position (%)','Mots','Occurrences','Termes distincts','Texte']];
+  selectedExtracts.forEach((c, idx) => {
+    const section = c.section === 'debut' ? 'Début' : c.section === 'milieu' ? 'Milieu' : 'Fin';
+    const termes = [...new Set(c.hits.map(h => searchTerms[h.termIdx]))].join(' | ');
+    rows.push([idx+1, section, c.pageNum, Math.round(c.relPos*100), c.wCount, c.hits.length, termes, `"${buildExcerptText(c).replace(/"/g,'""')}"`]);
+  });
+  downloadFile('extrascope_extraits.csv', '\uFEFF' + rows.map(r => r.join(';')).join('\n'), 'text/csv');
+}
+
+function downloadFile(filename, content, type) {
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([content], {type})), download: filename });
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  showToast(`✓ ${filename} téléchargé`);
+}
+
+// ── COPY ─────────────────────────────────────────────────────
+function copyExcerpt(idx) {
+  const c = selectedExtracts[idx];
+  const raw = buildExcerptText(c);
+  const section = c.section === 'debut' ? 'Début' : c.section === 'milieu' ? 'Milieu' : 'Fin';
+  const text = `[Extrait ${idx + 1} — ${section} — Page ${c.pageNum}]\n\n${raw}`;
+  navigator.clipboard.writeText(text).then(() => showToast('✓ Extrait copié dans le presse-papiers'));
+}
+
+function copyAll() {
+  let text = `EXTRAITS SÉLECTIONNÉS\n`;
+  text += `Termes recherchés : ${searchTerms.join(', ')}\n`;
+  text += `═`.repeat(60) + '\n\n';
+
+  selectedExtracts.forEach((c, idx) => {
+    const raw = buildExcerptText(c);
+    const section = c.section === 'debut' ? 'Début' : c.section === 'milieu' ? 'Milieu' : 'Fin';
+    text += `EXTRAIT ${idx + 1}\n`;
+    text += `Section : ${section} du document\n`;
+    text += `Page : ${c.pageNum}\n`;
+    text += `Longueur : ${c.wCount} mots\n`;
+    text += `Occurrences : ${c.hits.length}\n`;
+    text += `─`.repeat(40) + '\n';
+    text += raw + '\n';
+    text += `═`.repeat(60) + '\n\n';
+  });
+
+  navigator.clipboard.writeText(text).then(() => showToast('✓ Tous les extraits copiés !'));
+}
+
+// ── TOAST ────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── UTILS ────────────────────────────────────────────────────
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+</script>
+
+</body>
+</html>
