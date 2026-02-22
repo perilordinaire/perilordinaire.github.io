@@ -525,7 +525,6 @@ function addCorpus(){
   save();
 }
 function deleteCorpus(id){
-  if(!confirm('Supprimer ce document et ses extraits ? Les codages associés seront perdus.'))return;
   DB.extraits.filter(e=>e.doc_id===id).forEach(e=>delete DB.codages[e.id]);
   DB.extraits=DB.extraits.filter(e=>e.doc_id!==id);
   DB.corpus=DB.corpus.filter(d=>d.id!==id);
@@ -583,7 +582,6 @@ function addExtrait(){
   save();
 }
 function deleteExtrait(id){
-  if(!confirm('Supprimer cet extrait ? Le codage associé sera perdu.'))return;
   delete DB.codages[id];
   DB.extraits=DB.extraits.filter(e=>e.id!==id);
   if(activeExtrait===id){
