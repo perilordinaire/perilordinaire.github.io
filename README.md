@@ -30,8 +30,6 @@ Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour
 
 🔎 [PAC - Obstacles et Présupposés](https://perilordinaire.github.io/pac-obstacles.html)
 
----
-
 **ExtraScope**
 
 Conception d'ExtraScope, un outil en ligne de sélection randomisée d'extraits d'un .pdf selon un paramétrage libre du nombre d'occurrences présentes dans une fourchette de mots déterminée.
