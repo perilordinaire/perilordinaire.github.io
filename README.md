@@ -1,6 +1,5 @@
 <head>
  <div align="center">
-  
  <title>Ferdinand Lamolet</title>
 
 **Sciences de l'Éducation et de la Formation**, Aix-Marseille Université (AMU)
