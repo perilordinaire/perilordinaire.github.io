@@ -1,9 +1,12 @@
-
+<div align="center">
+  
 **Ferdinand Lamolet**
 
 **Sciences de l'Éducation et de la Formation**, Aix-Marseille Université (AMU)
 
 ferdinand.lamolet@etu.univ-amu.fr
+
+</div>
 
 ---
 
@@ -17,9 +20,9 @@ Nos recherches portent sur l'épistémologie des catégories et les représentat
 
 Transposition informatique du protocole du Test d'Associations Verbales (Abric, 2003 ; Vergès, 1992) pour explorer les représentations sociales spontanées des professionnels du secondaire.
 
-📋 Protocole (https://perilordinaire.github.io/tav-protocole.md)
+📋 [Protocole TAVI](https://perilordinaire.github.io/tav-protocole.md)
 
-🏫 TAV - Raccrochage Scolaire (https://perilordinaire.github.io/tav-raccrochage.html)
+🏫 [TAVI - Raccrochage Scolaire](https://perilordinaire.github.io/tav-raccrochage.html)
 
 ---
 
@@ -27,9 +30,9 @@ Transposition informatique du protocole du Test d'Associations Verbales (Abric, 
 
 Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique.
 
-📋 Protocole (https://perilordinaire.github.io/pac-protocole.html)
+📋 [Protocole PAC](https://perilordinaire.github.io/pac-protocole.html)
 
-🔎 PAC - Obstacles et Présupposés (https://perilordinaire.github.io/pac-obstacles.html)
+🔎 [PAC - Obstacles et Présupposés](https://perilordinaire.github.io/pac-obstacles.html)
 
 ---
 
@@ -37,7 +40,7 @@ Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour
 
 Conception d'ExtraScope, un outil en ligne d'extraction d'extraits d'un document selon un paramétrage libre d'occurrences présentes dans une fourchette de mots déterminée.
 
-🔭 Application (https://perilordinaire.github.io/extrascope.html)
+🔭 [Application ExtraScope](https://perilordinaire.github.io/extrascope.html)
 
 ---
 
