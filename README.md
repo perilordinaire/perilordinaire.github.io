@@ -14,7 +14,7 @@ Nos recherches portent sur l'épistémologie des catégories et les représentat
 
 **Test d'Associations Verbales Informatique - TAVI**
 
-Transposition informatique du protocole du Test d'Associations Verbales (Abric, 2003 ; Vergès, 1992) pour explorer les représentations sociales spontanées des professionnels du secondaire.
+Transposition informatique du protocole du Test d'Associations Verbales (Abric, 2003 ; Vergès, 1992) pour explorer les représentations sociales spontanées des professionnels du secondaire. Export Script Sheets.
 
 📋 [Protocole TAVI](https://perilordinaire.github.io/tav-protocole)
 
@@ -24,7 +24,7 @@ Transposition informatique du protocole du Test d'Associations Verbales (Abric, 
 
 **Plateforme d'Analyse de Corpus - PAC**
 
-Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique.
+Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique. Export CSV.
 
 📋 [Protocole PAC](https://perilordinaire.github.io/pac-protocole.html)
 
@@ -34,7 +34,7 @@ Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour
 
 **ExtraScope**
 
-Conception d'ExtraScope, un outil en ligne de sélection randomisée d'extraits d'un .pdf selon un paramétrage libre du nombre d'occurrences présentes dans une fourchette de mots déterminée.
+Conception d'ExtraScope, un outil en ligne de sélection randomisée d'extraits sur le début, le milieu, et la fin d'un pdf. Le paramétrage du nombre d'occurrences et de l'étandue de la fourchette de mots est libre.
 
 🔭 [Application ExtraScope](https://perilordinaire.github.io/extrascope.html)
 
