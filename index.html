@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PAC — Plateforme d'Analyse de Corpus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F5F2ED; --surface:#FFFFFF; --border:#DDD8CF;
+  --ink:#1C1A17; --ink-2:#5C5750; --ink-3:#9C9690;
+  --accent:#B85C38; --accent-lt:#F0E0D8;
+  --navy:#1E2D40; --navy-lt:#EDF1F5;
+  --green:#2D6A4F; --green-lt:#D8EDE5;
+  --amber:#92600A; --amber-lt:#FEF3C7;
+  --radius:6px; --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
+  --highlight:#FFE566; --highlight-border:#C8A800;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:15px;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
+
+header{background:var(--navy);color:#fff;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.brand{font-family:'Libre Baskerville',serif;font-size:1.05rem;letter-spacing:.03em;}
+.brand span{color:#A8BFD4;font-weight:400;}
+.progress-bar-wrap{display:flex;align-items:center;gap:.75rem;font-size:.8rem;color:#A8BFD4;}
+.progress-bar{width:120px;height:6px;background:rgba(255,255,255,.15);border-radius:3px;overflow:hidden;}
+.progress-bar-fill{height:100%;background:#6FA8C8;border-radius:3px;transition:width .4s ease;}
+
+nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex;padding:0 2rem;overflow-x:auto;}
+.tab-btn{padding:.75rem 1.1rem;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;color:var(--ink-2);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;letter-spacing:.04em;text-transform:uppercase;transition:color .15s,border-color .15s;white-space:nowrap;}
+.tab-btn:hover{color:var(--ink);}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;background:var(--navy-lt);color:var(--navy);border-radius:9px;font-size:.7rem;margin-left:.4rem;font-weight:600;}
+
+.tab-panel{display:none;padding:2rem;max-width:1120px;margin:0 auto;}
+.tab-panel.active{display:block;}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:1.5rem;}
+.card-header{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:#FAFAF8;}
+.card-title{font-family:'Libre Baskerville',serif;font-size:.95rem;font-weight:700;color:var(--ink);}
+.card-body{padding:1.5rem;}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+.form-group{display:flex;flex-direction:column;gap:.35rem;}
+.form-group.full{grid-column:1/-1;}
+label{font-size:.78rem;font-weight:600;color:var(--ink-2);text-transform:uppercase;letter-spacing:.05em;}
+input[type=text],input[type=number],select,textarea{padding:.55rem .75rem;border:1px solid var(--border);border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);background:var(--surface);transition:border-color .15s,box-shadow .15s;width:100%;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(30,45,64,.1);}
+textarea{resize:vertical;min-height:90px;line-height:1.6;}
+
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1.1rem;font-family:'DM Sans',sans-serif;font-size:.83rem;font-weight:600;border-radius:var(--radius);border:1px solid transparent;cursor:pointer;transition:all .15s;}
+.btn-primary{background:var(--navy);color:#fff;border-color:var(--navy);}
+.btn-primary:hover{background:#2A3F57;}
+.btn-outline{background:transparent;color:var(--ink-2);border-color:var(--border);}
+.btn-outline:hover{background:var(--bg);color:var(--ink);}
+.btn-ghost{background:transparent;color:var(--ink-3);border-color:transparent;font-size:.8rem;padding:.35rem .7rem;}
+.btn-ghost:hover{color:var(--accent);}
+.btn-sm{padding:.3rem .7rem;font-size:.78rem;}
+.btn-danger{background:#FEE2E2;color:#B91C1C;border-color:#FECACA;}
+.btn-danger:hover{background:#FCA5A5;}
+.btn-green{background:var(--green);color:#fff;border-color:var(--green);}
+.btn-green:hover{background:#245A42;}
+.btn-nav{background:rgba(255,255,255,.08);color:#C8D8E8;border-color:rgba(255,255,255,.15);font-size:.75rem;padding:.3rem .75rem;}
+.btn-nav:hover{background:rgba(255,255,255,.14);}
+
+.data-table{width:100%;border-collapse:collapse;font-size:.85rem;}
+.data-table th{text-align:left;padding:.6rem 1rem;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2);background:#FAFAF8;border-bottom:1px solid var(--border);white-space:nowrap;}
+.data-table td{padding:.65rem 1rem;border-bottom:1px solid #F0EDE8;vertical-align:middle;}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table tr:hover td{background:#FAFAF8;}
+.mono{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--ink-2);}
+
+.badge{display:inline-block;padding:.2rem .55rem;border-radius:3px;font-size:.72rem;font-weight:600;font-family:'DM Mono',monospace;}
+.badge-P{background:var(--green-lt);color:var(--green);}
+.badge-A{background:var(--navy-lt);color:var(--navy);}
+.badge-M{background:var(--amber-lt);color:var(--amber);}
+.badge-E{background:#F3E8FF;color:#7C3AED;}
+.badge-I{background:#E0F2FE;color:#0369A1;}
+.badge-D{background:var(--accent-lt);color:var(--accent);}
+.badge-coded{background:var(--green-lt);color:var(--green);}
+.badge-uncoded{background:#FEE2E2;color:#B91C1C;}
+.badge-type{background:var(--navy-lt);color:var(--navy);font-family:'DM Sans',sans-serif;font-size:.73rem;font-weight:500;padding:.2rem .5rem;border-radius:3px;}
+
+/* Codage layout */
+.coding-split{display:grid;grid-template-columns:290px 1fr;gap:1.5rem;align-items:start;}
+.coding-item{padding:.75rem 1rem;cursor:pointer;border-radius:var(--radius);margin-bottom:.4rem;border:1px solid var(--border);background:var(--surface);transition:all .15s;}
+.coding-item:hover{border-color:#A8C0D8;background:var(--navy-lt);}
+.coding-item.active{border-color:var(--navy);background:var(--navy-lt);}
+
+/* Dimension blocks */
+.dim-block{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.85rem;overflow:hidden;}
+.dim-header{display:flex;align-items:center;justify-content:space-between;padding:.7rem 1rem;background:#FAFAF8;cursor:pointer;user-select:none;}
+.dim-header:hover{background:var(--bg);}
+.dim-title{font-weight:600;font-size:.88rem;display:flex;align-items:center;gap:.55rem;flex:1;min-width:0;}
+.dim-num{width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;}
+.dim-question{font-size:.72rem;font-weight:400;color:var(--ink-3);font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.dim-body{padding:1rem;display:none;border-top:1px solid var(--border);}
+.dim-body.open{display:block;}
+.indicators details summary{font-size:.78rem;color:var(--ink-2);cursor:pointer;margin-bottom:.4rem;font-weight:500;list-style:none;}
+.indicators details summary::-webkit-details-marker{display:none;}
+.indicators-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.5rem;}
+.ind-col h5{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);margin-bottom:.35rem;}
+.ind-col ul{list-style:none;}
+.ind-col li{font-size:.78rem;color:var(--ink-2);padding:.15rem 0 .15rem .75rem;position:relative;line-height:1.4;}
+.ind-col li::before{content:'›';position:absolute;left:0;color:var(--ink-3);}
+.radio-group{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.5rem;}
+.radio-option{display:flex;align-items:center;gap:.35rem;}
+.radio-option input[type=radio]{accent-color:var(--navy);}
+.radio-option label{font-size:.83rem;font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink);cursor:pointer;}
+.cond-field{margin-top:.75rem;padding:.7rem;background:var(--accent-lt);border-radius:var(--radius);border:1px solid #E8C5B4;display:none;}
+.cond-field.visible{display:block;}
+
+/* Extract display with highlighting */
+.extract-display{font-size:.87rem;line-height:1.85;color:var(--ink);padding:1rem 1.25rem;background:var(--bg);border-radius:var(--radius);border-left:3px solid var(--accent);margin-bottom:.75rem;white-space:pre-wrap;word-wrap:break-word;}
+mark.kw{background:var(--highlight);color:var(--ink);border-radius:2px;padding:0 2px;border-bottom:2px solid var(--highlight-border);font-weight:600;}
+
+/* Keywords */
+.kw-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem;min-height:28px;}
+.kw-chip{display:inline-flex;align-items:center;gap:.3rem;background:var(--amber-lt);color:var(--amber);border:1px solid #F0C060;border-radius:99px;font-size:.73rem;font-weight:600;padding:.2rem .6rem;font-family:'DM Mono',monospace;}
+.kw-chip button{background:none;border:none;cursor:pointer;color:inherit;font-size:.85rem;padding:0;line-height:1;opacity:.6;}
+.kw-chip button:hover{opacity:1;}
+.kw-input-row{display:flex;gap:.5rem;align-items:center;margin-top:.5rem;}
+.kw-input-row input{flex:1;}
+
+/* Synthèse */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;text-align:center;}
+.stat-num{font-family:'Libre Baskerville',serif;font-size:2rem;font-weight:700;color:var(--navy);}
+.stat-label{font-size:.78rem;color:var(--ink-2);margin-top:.25rem;}
+.bar-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.55rem;font-size:.82rem;}
+.bar-label{width:200px;flex-shrink:0;color:var(--ink-2);font-size:.8rem;}
+.bar-track{flex:1;height:16px;background:#EEEAE4;border-radius:3px;overflow:hidden;display:flex;}
+.bar-seg{height:100%;transition:width .4s ease;}
+.bar-seg-P{background:var(--green);}
+.bar-seg-A{background:#94A3B8;}
+.bar-seg-M{background:#F59E0B;}
+.bar-pct{min-width:35px;text-align:right;font-family:'DM Mono',monospace;font-size:.75rem;color:var(--ink-2);}
+
+/* Export */
+.export-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.export-card{border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;}
+.export-card h4{font-weight:600;margin-bottom:.4rem;font-size:.9rem;}
+.export-card p{font-size:.8rem;color:var(--ink-2);margin-bottom:1rem;line-height:1.5;}
+
+.alert{padding:.75rem 1rem;border-radius:var(--radius);font-size:.85rem;margin-bottom:1rem;display:flex;align-items:flex-start;gap:.6rem;line-height:1.5;}
+.alert-info{background:var(--navy-lt);color:var(--navy);border:1px solid #C0D0E0;}
+.alert-warn{background:var(--amber-lt);color:var(--amber);border:1px solid #FDE68A;}
+.alert-success{background:var(--green-lt);color:var(--green);border:1px solid #A7D7C5;}
+
+.empty-state{text-align:center;padding:3rem;color:var(--ink-3);}
+.empty-state p{font-size:.9rem;margin-top:.5rem;}
+.section-label{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);margin-bottom:1rem;}
+.flex-gap{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;}
+.mt-2{margin-top:1rem;} .mt-3{margin-top:1.5rem;}
+.extract-preview{font-size:.8rem;color:var(--ink-2);font-style:italic;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+@media(max-width:800px){
+  .form-grid,.form-grid-3,.export-grid,.stat-grid,.indicators-grid{grid-template-columns:1fr;}
+  .coding-split{grid-template-columns:1fr;}
+  .tab-panel{padding:1rem;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">PAC <span>— Plateforme d'Analyse de Corpus · Lamolet (2026)</span></div>
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <div class="progress-bar-wrap">
+      <span id="progress-text">0 / 0 codés</span>
+      <div class="progress-bar"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <button class="tab-btn active" onclick="showTab('corpus',this)">Corpus <span class="tab-badge" id="badge-corpus">0</span></button>
+  <button class="tab-btn" onclick="showTab('extraits',this)">Extraits <span class="tab-badge" id="badge-extraits">0</span></button>
+  <button class="tab-btn" onclick="showTab('codage',this)">Codage <span class="tab-badge" id="badge-codage">0</span></button>
+  <button class="tab-btn" onclick="showTab('synthese',this)">Synthèse</button>
+  <button class="tab-btn" onclick="showTab('export',this)">Export CSV</button>
+  <button class="tab-btn" onclick="showTab('parametres',this)">⚙ Paramètres</button>
+</nav>
+
+<!-- ══════════ CORPUS ══════════ -->
+<div class="tab-panel active" id="tab-corpus">
+  <div class="card">
+    <div class="card-header"><span class="card-title">Ajouter un document au corpus</span></div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Auteur(s)</label>
+          <input type="text" id="c-auteur" placeholder="Bernard, P.-Y." />
+        </div>
+        <div class="form-group">
+          <label>Année de publication</label>
+          <input type="number" id="c-annee" placeholder="2019" min="1900" max="2030" />
+        </div>
+        <div class="form-group full">
+          <label>Titre complet</label>
+          <input type="text" id="c-titre" placeholder="Titre du document…" />
+        </div>
+        <div class="form-group">
+          <label>Nature du document</label>
+          <select id="c-type">
+            <option value="">— Choisir —</option>
+            <option>Article de revue à comité de lecture</option>
+            <option>Chapitre d'ouvrage</option>
+            <option>Ouvrage</option>
+            <option>Thèse de doctorat</option>
+            <option>Rapport institutionnel</option>
+            <option>Rapport de recherche</option>
+            <option>Acte de colloque</option>
+            <option>Document de travail (working paper)</option>
+            <option>Texte officiel / législatif</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Décennie de publication</label>
+          <select id="c-periode">
+            <option value="">— Choisir —</option>
+            <option>Avant 2000</option>
+            <option>2000–2009</option>
+            <option>2010–2019</option>
+            <option>2020–2029</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Texte intégral accessible</label>
+          <select id="c-accessible">
+            <option>Oui</option>
+            <option>Non</option>
+            <option>Partiel</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Référence bibliographique / DOI / URL</label>
+          <input type="text" id="c-note" placeholder="Revue, éditeur, DOI, URL…" />
+        </div>
+      </div>
+      <div style="margin-top:1rem;text-align:right;">
+        <button class="btn btn-primary" onclick="addCorpus()">＋ Ajouter au corpus</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Documents du corpus</span>
+      <span id="corpus-count-label" style="font-size:.8rem;color:var(--ink-2)"></span>
+    </div>
+    <div id="corpus-table-wrap"><div class="empty-state"><p>Aucun document ajouté.</p></div></div>
+  </div>
+</div>
+
+<!-- ══════════ EXTRAITS ══════════ -->
+<div class="tab-panel" id="tab-extraits">
+  <div class="card">
+    <div class="card-header"><span class="card-title">Ajouter un extrait</span></div>
+    <div class="card-body">
+      <div class="alert alert-info">ℹ L'ID est généré automatiquement (ex : 001-1). Sélectionnez d'abord le document source, puis la section, puis collez le texte.</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Document source</label>
+          <select id="e-doc" onchange="updateExtractCount()">
+            <option value="">— Sélectionner un document —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Section dans le document</label>
+          <select id="e-section">
+            <option>Début — Introduction / définition du problème</option>
+            <option>Milieu — Analyse / résultats</option>
+            <option>Fin — Discussion / conclusion</option>
+            <option>Autre section</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Texte de l'extrait (150–300 mots recommandés)</label>
+          <textarea id="e-texte" rows="7" placeholder="Coller ici l'extrait complet — ne pas couper les phrases en milieu de sens…" oninput="countWords()"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Nombre de mots (calculé automatiquement)</label>
+          <input type="number" id="e-mots" readonly style="background:#FAFAF8;color:var(--ink-2);" value="0" />
+        </div>
+        <div class="form-group" style="align-self:flex-end;">
+          <label>&nbsp;</label>
+          <div style="font-size:.82rem;padding:.55rem 0;" id="slot-hint"></div>
+        </div>
+      </div>
+      <div style="margin-top:1rem;text-align:right;">
+        <button class="btn btn-primary" onclick="addExtrait()">＋ Ajouter l'extrait</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Extraits enregistrés</span></div>
+    <div id="extraits-table-wrap"><div class="empty-state"><p>Aucun extrait ajouté.</p></div></div>
+  </div>
+</div>
+
+<!-- ══════════ CODAGE ══════════ -->
+<div class="tab-panel" id="tab-codage">
+  <div class="coding-split">
+    <div>
+      <div class="section-label">Extraits à coder</div>
+      <div id="coding-list">
+        <div class="empty-state" style="padding:2rem;"><p>Ajoutez des extraits d'abord.</p></div>
+      </div>
+    </div>
+    <div id="coding-form-wrap">
+      <div class="empty-state" style="padding:3rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);">
+        <p style="font-size:1rem;">← Sélectionnez un extrait</p>
+        <p style="margin-top:.5rem;">Le texte surligné et les dimensions apparaîtront ici.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SYNTHÈSE ══════════ -->
+<div class="tab-panel" id="tab-synthese">
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-num" id="s-docs">0</div><div class="stat-label">Documents</div></div>
+    <div class="stat-card"><div class="stat-num" id="s-extraits">0</div><div class="stat-label">Extraits</div></div>
+    <div class="stat-card"><div class="stat-num" id="s-coded">0%</div><div class="stat-label">Codés</div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Fréquences par dimension</span></div>
+    <div class="card-body" id="synth-bars"><div class="empty-state"><p>Codez des extraits pour voir les résultats.</p></div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Comparaison par nature de document</span></div>
+    <div class="card-body" id="comp-table-wrap"><div class="empty-state"><p>Données insuffisantes (au moins 2 natures de documents requises).</p></div></div>
+  </div>
+</div>
+
+<!-- ══════════ EXPORT ══════════ -->
+<div class="tab-panel" id="tab-export">
+  <div class="alert alert-success">✓ CSV encodés en <strong>UTF-8 avec BOM</strong>, séparateur <strong>point-virgule</strong> — compatibles Jamovi, Sphinx et Excel.</div>
+  <div class="export-grid">
+    <div class="export-card">
+      <h4>📄 corpus.csv</h4>
+      <p>Métadonnées : ID, Auteur, Année, Titre, Nature_Document, Période, Accessible, Référence.</p>
+      <button class="btn btn-outline" onclick="exportCSV('corpus')">Télécharger corpus.csv</button>
+    </div>
+    <div class="export-card">
+      <h4>📄 extraits.csv</h4>
+      <p>Table des extraits : ID_Extrait, ID_Doc, Section, Texte, Nb_mots.</p>
+      <button class="btn btn-outline" onclick="exportCSV('extraits')">Télécharger extraits.csv</button>
+    </div>
+    <div class="export-card">
+      <h4>📄 codage.csv</h4>
+      <p>Table brute : ID_Extrait, D1–D6, D2_Cible, Notes. Structure miroir du fichier Excel modèle.</p>
+      <button class="btn btn-outline" onclick="exportCSV('codage')">Télécharger codage.csv</button>
+    </div>
+    <div class="export-card" style="border-color:var(--navy);background:var(--navy-lt);">
+      <h4>📊 codage_enrichi.csv <span style="font-size:.72rem;color:var(--accent);margin-left:.3rem;">RECOMMANDÉ</span></h4>
+      <p>Table jointe (corpus + codage) : toutes les variables en un fichier, prêt pour Jamovi (χ², tris croisés).</p>
+      <button class="btn btn-primary" onclick="exportCSV('enrichi')">Télécharger codage_enrichi.csv</button>
+    </div>
+  </div>
+  <div class="card mt-3">
+    <div class="card-header"><span class="card-title">Sauvegarde / Restauration</span></div>
+    <div class="card-body">
+      <p style="font-size:.85rem;color:var(--ink-2);margin-bottom:1rem;">Le JSON conserve l'intégralité des données (textes des extraits, mots-clés, codages). Exportez-le régulièrement.</p>
+      <div class="flex-gap">
+        <button class="btn btn-outline" onclick="exportJSON()">💾 Sauvegarder tout (JSON)</button>
+        <button class="btn btn-outline" onclick="document.getElementById('import-json').click()">📂 Restaurer depuis JSON</button>
+        <input type="file" id="import-json" accept=".json" style="display:none" onchange="importJSON(event)">
+        <button class="btn btn-danger btn-sm" onclick="resetAll()">🗑 Tout effacer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PARAMÈTRES ══════════ -->
+<div class="tab-panel" id="tab-parametres">
+  <div class="card">
+    <div class="card-header"><span class="card-title">Mots-clés à surligner dans les extraits</span></div>
+    <div class="card-body">
+      <p style="font-size:.88rem;color:var(--ink-2);margin-bottom:1rem;">Ces termes seront surlignés en jaune dans le texte de l'extrait pendant le codage — inspiré de la fonction <em>concordance KWIC</em> des logiciels d'analyse de corpus (NVivo, TXM, IRaMuTeQ). Ajoutez les termes issus de vos indicateurs théoriques.</p>
+      <div class="kw-chips" id="kw-chips"></div>
+      <div class="kw-input-row">
+        <input type="text" id="kw-input" placeholder="Nouveau mot-clé…" onkeydown="if(event.key==='Enter'){event.preventDefault();addKeyword();}" />
+        <button class="btn btn-primary btn-sm" onclick="addKeyword()">Ajouter</button>
+      </div>
+      <p style="margin-top:.75rem;font-size:.78rem;color:var(--ink-3);">Exemples pour ce corpus : décrochage · décrocheur · fragile · à risque · processus · profil · lycée professionnel · abandon · sortie précoce · trajectoire · remédier · dépister</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-title">Dimensions de codage actives</span></div>
+    <div class="card-body">
+      <p style="font-size:.88rem;color:var(--ink-2);margin-bottom:1rem;">Ces 6 dimensions sont définies dans le bloc <code style="background:var(--bg);padding:.1rem .35rem;border-radius:3px;">const DIMS</code> du code source. Pour les adapter à votre recherche, consultez le <em>Protocole de réutilisation</em>.</p>
+      <div id="dims-summary"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════ DATA ═══════════
+let DB = { corpus:[], extraits:[], codages:{}, keywords:[] };
+
+const DIMS = [
+  {
+    id:'D1', label:'Réification',
+    question:'Le décrochage est-il traité comme une « chose » possédée par l\'élève ?',
+    options:[{v:'P',l:'Présente'},{v:'A',l:'Absente'},{v:'M',l:'Mixte'}],
+    indicators:{
+      present:['« LE décrochage » comme sujet grammatical actif','« UN décrocheur » (catégorie d\'individu stable)','Profil de décrocheur','Métaphores spatiales : tombe, décroche, glisse'],
+      absent:['Processus de décrochage (dynamique temporelle)','Désengagement progressif','Les décrochages au pluriel (hétérogénéité)','Analyse relationnelle institution–élève']
+    }
+  },
+  {
+    id:'D2', label:'Vocabulaire clinique',
+    question:'Un vocabulaire médical ou pathologique est-il utilisé ?',
+    options:[{v:'P',l:'Présent'},{v:'A',l:'Absent'},{v:'M',l:'Mixte'}],
+    indicators:{
+      present:['Termes médicaux : fragile, en souffrance, à risque, symptôme','Termes thérapeutiques : traiter, remédier, soigner, panser','Lutte contre (modèle de la maladie)','Dépister, prévenir (vocabulaire préventif médical)'],
+      absent:['Vocabulaire sociologique : position, trajectoire, structure','Vocabulaire neutre : situation, parcours, expérience','Absence de pathologisation de la situation']
+    },
+    conditional:{ triggerValue:'P', field:'D2_Cible', label:'Cible du vocabulaire clinique',
+      options:[{v:'LP',l:'Ciblé sur le LP spécifiquement'},{v:'GEN',l:'Général (non spécifique au LP)'}]
+    }
+  },
+  {
+    id:'D3', label:'Focalisation',
+    question:'Où est situé le problème — dans l\'élève ou dans l\'institution ?',
+    options:[{v:'E',l:'Élève dominant'},{v:'I',l:'Institution dominante'},{v:'M',l:'Mixte assumée'}],
+    indicators:{
+      present:['Caractéristiques individuelles (motivation, capacités)','Défaillances personnelles ou familiales','Facteurs de risque individuels','Remédiation individuelle comme seule solution'],
+      absent:['Organisation du système scolaire mise en cause','Mécanismes institutionnels de sélection','Inadéquation pédagogique ou structurelle','Conditions systémiques et structurelles']
+    }, presentLabel:'Focalisation Élève', absentLabel:'Focalisation Institution'
+  },
+  {
+    id:'D4', label:'Reconnaissance des acquis hors école',
+    question:'Les savoirs et compétences acquis hors école sont-ils évoqués ?',
+    options:[{v:'P',l:'Présente'},{v:'A',l:'Absente'},{v:'M',l:'Ambiguë'}],
+    indicators:{
+      present:['Mention explicite de compétences hors école','Valorisation des savoirs pratiques','Évocation de parcours alternatifs légitimes','Référence à l\'apprentissage informel','Mention de la VAE ou dispositifs similaires'],
+      absent:['Aucune mention des acquis hors cadre scolaire','Seuls les diplômes officiels mentionnés','Le décrocheur défini uniquement par ce qu\'il n\'a pas']
+    }
+  },
+  {
+    id:'D5', label:'Norme implicite',
+    question:'Les normes scolaires (durée, diplôme, parcours) sont-elles explicitées ou présupposées ?',
+    options:[{v:'I',l:'Implicite (présupposée)'},{v:'E',l:'Explicite (questionnée)'},{v:'M',l:'Mixte'}],
+    indicators:{
+      present:['« Prématurité » sans définition','« Durée normale » non questionnée','« Sortie précoce » sans préciser par rapport à quoi','Norme du baccalauréat comme évidence'],
+      absent:['Questionnement de ce qui est « normal »','Historicisation de la norme scolaire','Reconnaissance du caractère construit','Comparaisons internationales ou historiques']
+    }, presentLabel:'Norme IMPLICITE', absentLabel:'Norme EXPLICITE'
+  },
+  {
+    id:'D6', label:'Statut du lycée professionnel',
+    question:'Le LP est-il défini par rapport au LGT (par défaut) ou reconnu comme ayant une logique propre ?',
+    options:[{v:'D',l:'Par défaut (écart LGT)'},{v:'P',l:'Normativité propre'},{v:'M',l:'Mixte'}],
+    indicators:{
+      present:['Comparaison systématique défavorable au LGT','Voie de garage, second choix, filière de relégation','Élèves en difficulté orientés en LP','Hiérarchie des filières naturalisée'],
+      absent:['Rapport au savoir pratique reconnu','Valorisation des compétences techniques','LP comme logique alternative non inférieure','Critique de la hiérarchie des filières']
+    }
+  }
+];
+
+// ═══════════ STORAGE ═══════════
+function save() { localStorage.setItem('pac_v2', JSON.stringify(DB)); updateUI(); }
+function load() {
+  const d = localStorage.getItem('pac_v2') || localStorage.getItem('acc_db');
+  if (d) try { const p=JSON.parse(d); DB={corpus:p.corpus||[],extraits:p.extraits||[],codages:p.codages||{},keywords:p.keywords||[]}; } catch(e){}
+}
+
+// ═══════════ TABS ═══════════
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id==='synthese') renderSynthese();
+  if (id==='parametres') renderParams();
+}
+
+// ═══════════ HELPERS ═══════════
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function genId(arr){if(!arr.length)return'001';const n=arr.map(d=>parseInt(d.id)).filter(x=>!isNaN(x));return String(Math.max(...n)+1).padStart(3,'0');}
+
+// ═══════════ KEYWORD HIGHLIGHTING ═══════════
+function highlightText(text, keywords) {
+  if (!keywords||!keywords.length) return esc(text);
+  let r = esc(text);
+  [...keywords].sort((a,b)=>b.length-a.length).forEach(kw=>{
+    if (!kw.trim()) return;
+    const re = new RegExp('('+kw.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+    r = r.replace(re,'<mark class="kw">$1</mark>');
+  });
+  return r;
+}
+
+// ═══════════ KEYWORDS ═══════════
+function renderKeywords() {
+  const w=document.getElementById('kw-chips'); if(!w)return;
+  w.innerHTML = DB.keywords.map((kw,i)=>`<span class="kw-chip">${esc(kw)}<button onclick="removeKeyword(${i})" title="Supprimer">×</button></span>`).join('');
+}
+function addKeyword(){
+  const inp=document.getElementById('kw-input'); const v=inp.value.trim();
+  if(!v||DB.keywords.includes(v)){inp.value='';return;}
+  DB.keywords.push(v); inp.value=''; save(); renderKeywords();
+}
+function removeKeyword(i){DB.keywords.splice(i,1);save();renderKeywords();}
+
+// ═══════════ CORPUS ═══════════
+function addCorpus(){
+  const auteur=document.getElementById('c-auteur').value.trim();
+  const annee=document.getElementById('c-annee').value.trim();
+  const titre=document.getElementById('c-titre').value.trim();
+  const type=document.getElementById('c-type').value;
+  const per=document.getElementById('c-periode').value;
+  const acc=document.getElementById('c-accessible').value;
+  const note=document.getElementById('c-note').value.trim();
+  if(!auteur||!titre||!type||!per){alert('Remplissez au minimum : Auteur, Titre, Nature et Période.');return;}
+  DB.corpus.push({id:genId(DB.corpus),auteur,annee,titre,type,periode:per,accessible:acc,note});
+  ['c-auteur','c-annee','c-titre','c-note'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('c-type').value=''; document.getElementById('c-periode').value='';
+  save();
+}
+function deleteCorpus(id){
+  if(!confirm('Supprimer ce document et ses extraits ? Les codages associés seront perdus.'))return;
+  DB.extraits.filter(e=>e.doc_id===id).forEach(e=>delete DB.codages[e.id]);
+  DB.extraits=DB.extraits.filter(e=>e.doc_id!==id);
+  DB.corpus=DB.corpus.filter(d=>d.id!==id);
+  save();
+}
+function renderCorpus(){
+  document.getElementById('corpus-count-label').textContent=`${DB.corpus.length} document${DB.corpus.length>1?'s':''}`;
+  document.getElementById('badge-corpus').textContent=DB.corpus.length;
+  const w=document.getElementById('corpus-table-wrap');
+  if(!DB.corpus.length){w.innerHTML='<div class="empty-state"><p>Aucun document.</p></div>';return;}
+  w.innerHTML=`<table class="data-table"><thead><tr><th>ID</th><th>Auteur</th><th>Titre</th><th>Nature</th><th>Décennie</th><th>Extraits</th><th></th></tr></thead><tbody>${
+    DB.corpus.map(d=>{
+      const ec=DB.extraits.filter(e=>e.doc_id===d.id).length;
+      const stype=d.type.length>28?d.type.substring(0,26)+'…':d.type;
+      return `<tr>
+        <td class="mono">${d.id}</td>
+        <td><strong>${esc(d.auteur)}</strong>${d.annee?` <span style="color:var(--ink-2)">(${d.annee})</span>`:''}</td>
+        <td style="max-width:240px;font-size:.82rem;">${esc(d.titre)}</td>
+        <td><span class="badge-type" title="${esc(d.type)}">${esc(stype)}</span></td>
+        <td style="font-size:.8rem;color:var(--ink-2);white-space:nowrap;">${d.periode}</td>
+        <td style="font-size:.8rem;color:${ec>=3?'var(--green)':'var(--ink-3)'};">${ec}/3</td>
+        <td><button class="btn btn-ghost btn-sm" onclick="deleteCorpus('${d.id}')" title="Supprimer">✕</button></td>
+      </tr>`;
+    }).join('')
+  }</tbody></table>`;
+}
+
+// ═══════════ EXTRAITS ═══════════
+function updateExtractCount(){
+  const docId=document.getElementById('e-doc').value;
+  const hint=document.getElementById('slot-hint');
+  if(!docId){hint.textContent='';return;}
+  const c=DB.extraits.filter(e=>e.doc_id===docId).length;
+  hint.textContent=`${c}/3 extrait${c>1?'s':''} pour ce document`;
+  hint.style.color=c>=3?'var(--accent)':'var(--ink-2)';
+}
+function countWords(){
+  const t=document.getElementById('e-texte').value.trim();
+  document.getElementById('e-mots').value=t?t.split(/\s+/).length:0;
+}
+function genExtractId(docId){
+  return `${docId}-${DB.extraits.filter(e=>e.doc_id===docId).length+1}`;
+}
+function addExtrait(){
+  const docId=document.getElementById('e-doc').value;
+  const section=document.getElementById('e-section').value;
+  const texte=document.getElementById('e-texte').value.trim();
+  const mots=parseInt(document.getElementById('e-mots').value)||0;
+  if(!docId){alert('Sélectionnez un document source.');return;}
+  if(!texte){alert('Ajoutez le texte de l\'extrait.');return;}
+  if(DB.extraits.filter(e=>e.doc_id===docId).length>=3)
+    if(!confirm('Ce document a déjà 3 extraits. Ajouter quand même ?'))return;
+  DB.extraits.push({id:genExtractId(docId),doc_id:docId,section,texte,mots});
+  document.getElementById('e-texte').value=''; document.getElementById('e-mots').value='0';
+  save();
+}
+function deleteExtrait(id){
+  if(!confirm('Supprimer cet extrait ? Le codage associé sera perdu.'))return;
+  delete DB.codages[id];
+  DB.extraits=DB.extraits.filter(e=>e.id!==id);
+  if(activeExtrait===id){
+    activeExtrait=null;
+    document.getElementById('coding-form-wrap').innerHTML=`<div class="empty-state" style="padding:3rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);"><p>← Sélectionnez un extrait</p></div>`;
+  }
+  save();
+}
+function renderExtraits(){
+  const sel=document.getElementById('e-doc'); const cur=sel.value;
+  sel.innerHTML='<option value="">— Sélectionner un document —</option>'+DB.corpus.map(d=>`<option value="${d.id}" ${cur===d.id?'selected':''}>${d.id} — ${esc(d.auteur)}${d.annee?` (${d.annee})`:''}</option>`).join('');
+  document.getElementById('badge-extraits').textContent=DB.extraits.length;
+  const w=document.getElementById('extraits-table-wrap');
+  if(!DB.extraits.length){w.innerHTML='<div class="empty-state"><p>Aucun extrait.</p></div>';return;}
+  w.innerHTML=`<table class="data-table"><thead><tr><th>ID</th><th>Document</th><th>Section</th><th>Aperçu</th><th>Mots</th><th>Statut</th><th>Actions</th></tr></thead><tbody>${
+    DB.extraits.map(e=>{
+      const doc=DB.corpus.find(d=>d.id===e.doc_id)||{};
+      const coded=DB.codages[e.id]?'<span class="badge badge-coded">Codé</span>':'<span class="badge badge-uncoded">À coder</span>';
+      const secShort=e.section.split('—')[0].trim();
+      return `<tr>
+        <td class="mono">${e.id}</td>
+        <td style="font-size:.8rem;">${esc((doc.auteur||'').split(',')[0])}${doc.annee?` (${doc.annee})`:''}</td>
+        <td style="font-size:.78rem;color:var(--ink-2);white-space:nowrap;">${esc(secShort)}</td>
+        <td><span class="extract-preview">${esc(e.texte)}</span></td>
+        <td class="mono">${e.mots}</td>
+        <td>${coded}</td>
+        <td style="white-space:nowrap;">
+          <button class="btn btn-ghost btn-sm" onclick="goCode('${e.id}')" title="Aller coder cet extrait">✎ Coder</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteExtrait('${e.id}')" title="Supprimer">✕</button>
+        </td>
+      </tr>`;
+    }).join('')
+  }</tbody></table>`;
+}
+function goCode(id){
+  selectExtrait(id);
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-codage').classList.add('active');
+  document.querySelectorAll('.tab-btn')[2].classList.add('active');
+}
+
+// ═══════════ CODAGE ═══════════
+let activeExtrait=null;
+
+function renderCodingList(){
+  const list=document.getElementById('coding-list');
+  document.getElementById('badge-codage').textContent=Object.keys(DB.codages).length;
+  if(!DB.extraits.length){list.innerHTML='<div class="empty-state" style="padding:2rem;"><p>Ajoutez des extraits.</p></div>';return;}
+  list.innerHTML=DB.extraits.map(e=>{
+    const doc=DB.corpus.find(d=>d.id===e.doc_id)||{};
+    const coded=DB.codages[e.id];
+    const isActive=activeExtrait===e.id;
+    return `<div class="coding-item ${isActive?'active':''}" onclick="selectExtrait('${e.id}')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <span class="mono" style="font-size:.82rem;">${e.id}</span>
+        ${coded?'<span style="font-size:.75rem;color:var(--green);font-weight:600;">✓ codé</span>':'<span style="font-size:.75rem;color:#B91C1C;">○ à coder</span>'}
+      </div>
+      <div style="font-size:.78rem;color:var(--ink-2);margin-top:.2rem;">${esc((doc.auteur||'').split(',')[0])}</div>
+      <div style="font-size:.73rem;color:var(--ink-3);">${e.section.split('—')[0].trim()}</div>
+    </div>`;
+  }).join('');
+}
+
+function selectExtrait(id){
+  activeExtrait=id;
+  renderCodingList();
+  const e=DB.extraits.find(x=>x.id===id); if(!e)return;
+  const doc=DB.corpus.find(d=>d.id===e.doc_id)||{};
+  const ex=DB.codages[id]||{};
+
+  const highlighted=highlightText(e.texte,DB.keywords);
+  const kwNote=DB.keywords.length
+    ?`<div style="font-size:.74rem;color:var(--amber);margin-top:.5rem;display:flex;align-items:center;gap:.4rem;">🔍 Termes surlignés : ${DB.keywords.map(k=>`<span class="kw-chip" style="font-size:.68rem;">${esc(k)}</span>`).join(' ')}</div>`
+    :`<div style="font-size:.74rem;color:var(--ink-3);margin-top:.4rem;">Aucun mot-clé configuré — rendez-vous dans ⚙ Paramètres.</div>`;
+
+  let html=`<div class="card">
+    <div class="card-header">
+      <div>
+        <span class="card-title">${id}</span>
+        <span style="font-size:.8rem;font-weight:400;color:var(--ink-2);margin-left:.5rem;">${esc(doc.auteur||'')}${doc.annee?` (${doc.annee})`:''}</span>
+      </div>
+      <span style="font-size:.76rem;color:var(--ink-3);">${e.section.split('—')[0].trim()} · ${e.mots} mots</span>
+    </div>
+    <div class="card-body">
+      <div class="extract-display">${highlighted}</div>
+      ${kwNote}
+      <hr style="border:none;border-top:1px solid var(--border);margin:1.25rem 0;">`;
+
+  DIMS.forEach(dim=>{
+    const sv=ex[dim.id]||''; const sc=ex[dim.id+'_Cible']||'';
+    const pL=dim.presentLabel||'Indicateurs — dimension PRÉSENTE';
+    const aL=dim.absentLabel||'Indicateurs — dimension ABSENTE';
+    html+=`<div class="dim-block">
+      <div class="dim-header" onclick="toggleDim(this)">
+        <div class="dim-title">
+          <span class="dim-num">${dim.id.replace('D','')}</span>
+          <div><div>${dim.label}</div><div class="dim-question">${dim.question}</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:.5rem;flex-shrink:0;">
+          ${sv?`<span class="badge badge-${sv}">${sv}</span>`:'<span style="font-size:.72rem;color:var(--ink-3)">—</span>'}
+          <span style="color:var(--ink-3);font-size:.85rem;">›</span>
+        </div>
+      </div>
+      <div class="dim-body">
+        <div class="indicators">
+          <details><summary>📋 Voir les indicateurs de codage</summary>
+            <div class="indicators-grid">
+              <div class="ind-col"><h5>${pL}</h5><ul>${dim.indicators.present.map(i=>`<li>${i}</li>`).join('')}</ul></div>
+              <div class="ind-col"><h5>${aL}</h5><ul>${dim.indicators.absent.map(i=>`<li>${i}</li>`).join('')}</ul></div>
+            </div>
+          </details>
+        </div>
+        <div class="radio-group">
+          ${dim.options.map(o=>`<label class="radio-option"><input type="radio" name="dim_${id}_${dim.id}" value="${o.v}" ${sv===o.v?'checked':''} onchange="handleDim('${id}','${dim.id}',this.value)"><label>${o.v} — ${o.l}</label></label>`).join('')}
+        </div>
+        ${dim.conditional?`
+          <div class="cond-field ${sv===dim.conditional.triggerValue?'visible':''}" id="cond_${id}_${dim.id}">
+            <label style="font-size:.76rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--accent);">${dim.conditional.label}</label>
+            <div class="radio-group" style="margin-top:.4rem;">
+              ${dim.conditional.options.map(o=>`<label class="radio-option"><input type="radio" name="cond_${id}_${dim.id}" value="${o.v}" ${sc===o.v?'checked':''} onchange="handleCond('${id}','${dim.conditional.field}',this.value)"><label>${o.v} — ${o.l}</label></label>`).join('')}
+            </div>
+          </div>`:''}
+      </div>
+    </div>`;
+  });
+
+  html+=`
+      <div class="form-group" style="margin-top:1rem;">
+        <label>Notes et exemples précis</label>
+        <textarea id="notes_${id}" rows="3" placeholder="Termes relevés, page, formulation exacte qui a motivé le codage…">${esc(ex.Notes||'')}</textarea>
+      </div>
+      <div style="margin-top:1rem;display:flex;justify-content:space-between;align-items:center;">
+        <button class="btn btn-danger btn-sm" onclick="deleteExtrait('${id}')">Supprimer cet extrait</button>
+        <button class="btn btn-green" onclick="saveCodage('${id}')">✓ Enregistrer le codage</button>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById('coding-form-wrap').innerHTML=html;
+}
+
+function toggleDim(h){h.nextElementSibling.classList.toggle('open');}
+function handleDim(extractId,dimId,value){
+  if(!DB.codages[extractId])DB.codages[extractId]={};
+  DB.codages[extractId][dimId]=value;
+  const dim=DIMS.find(d=>d.id===dimId);
+  if(dim&&dim.conditional){
+    const el=document.getElementById(`cond_${extractId}_${dimId}`);
+    if(el)el.classList.toggle('visible',value===dim.conditional.triggerValue);
+    if(value!==dim.conditional.triggerValue)DB.codages[extractId][dim.conditional.field]='-';
+  }
+}
+function handleCond(extractId,field,value){
+  if(!DB.codages[extractId])DB.codages[extractId]={};
+  DB.codages[extractId][field]=value;
+}
+function saveCodage(extractId){
+  if(!DB.codages[extractId])DB.codages[extractId]={};
+  const n=document.getElementById(`notes_${extractId}`);
+  if(n)DB.codages[extractId].Notes=n.value.trim();
+  const missing=DIMS.filter(d=>!DB.codages[extractId][d.id]);
+  if(missing.length&&!confirm(`${missing.map(d=>d.label).join(', ')} non codé(es). Enregistrer quand même ?`))return;
+  save();
+  const btn=document.querySelector(`button[onclick="saveCodage('${extractId}')"]`);
+  if(btn){const orig=btn.textContent;btn.textContent='✓ Enregistré !';setTimeout(()=>{btn.textContent=orig;},1800);}
+  selectExtrait(extractId);
+}
+
+// ═══════════ SYNTHÈSE ═══════════
+function renderSynthese(){
+  document.getElementById('s-docs').textContent=DB.corpus.length;
+  document.getElementById('s-extraits').textContent=DB.extraits.length;
+  const pct=DB.extraits.length?Math.round(Object.keys(DB.codages).length/DB.extraits.length*100):0;
+  document.getElementById('s-coded').textContent=pct+'%';
+  const coded=DB.extraits.filter(e=>DB.codages[e.id]); const n=coded.length;
+  if(!n){
+    document.getElementById('synth-bars').innerHTML='<div class="empty-state"><p>Codez des extraits pour voir les résultats.</p></div>';
+    document.getElementById('comp-table-wrap').innerHTML='<div class="empty-state"><p>Données insuffisantes.</p></div>';
+    return;
+  }
+  const defs=[
+    {id:'D1',label:'D1 — Réification',         vals:['P','A','M'],lbls:['Présente','Absente','Mixte']},
+    {id:'D2',label:'D2 — Vocab. clinique',      vals:['P','A','M'],lbls:['Présent','Absent','Mixte']},
+    {id:'D3',label:'D3 — Focalisation',         vals:['E','I','M'],lbls:['Élève','Institution','Mixte']},
+    {id:'D4',label:'D4 — Acquis hors école',    vals:['P','A','M'],lbls:['Présente','Absente','Ambiguë']},
+    {id:'D5',label:'D5 — Norme',                vals:['I','E','M'],lbls:['Implicite','Explicite','Mixte']},
+    {id:'D6',label:'D6 — Statut LP',            vals:['D','P','M'],lbls:['Par défaut','Normativité propre','Mixte']},
+  ];
+  const segs=['bar-seg-P','bar-seg-A','bar-seg-M'];
+  let html=`<div style="display:flex;gap:1.25rem;margin-bottom:.75rem;font-size:.74rem;">
+    <span><span style="display:inline-block;width:10px;height:10px;background:var(--green);border-radius:2px;margin-right:.3rem;"></span>Val. 1</span>
+    <span><span style="display:inline-block;width:10px;height:10px;background:#94A3B8;border-radius:2px;margin-right:.3rem;"></span>Val. 2</span>
+    <span><span style="display:inline-block;width:10px;height:10px;background:#F59E0B;border-radius:2px;margin-right:.3rem;"></span>Mixte</span>
+  </div>`;
+  defs.forEach(dim=>{
+    const counts=dim.vals.map(v=>coded.filter(e=>DB.codages[e.id][dim.id]===v).length);
+    const pcts=counts.map(c=>+(c/n*100).toFixed(1));
+    html+=`<div class="bar-row">
+      <div class="bar-label">${dim.label}</div>
+      <div class="bar-track">${dim.vals.map((_,i)=>`<div class="bar-seg ${segs[i]}" style="width:${pcts[i]}%" title="${dim.lbls[i]}: ${pcts[i]}%"></div>`).join('')}</div>
+      <div class="bar-pct">${pcts[0]}%</div>
+      <div style="font-size:.7rem;color:var(--ink-3);min-width:120px;padding-left:.5rem">${dim.vals.map((v,i)=>`${v}:${counts[i]}`).join(' · ')}</div>
+    </div>`;
+  });
+  document.getElementById('synth-bars').innerHTML=html;
+
+  // Comparison by document type
+  const tg={};
+  coded.forEach(e=>{const doc=DB.corpus.find(d=>d.id===e.doc_id)||{};const t=doc.type||'Inconnu';if(!tg[t])tg[t]=[];tg[t].push(e);});
+  const types=Object.keys(tg);
+  if(types.length<2){document.getElementById('comp-table-wrap').innerHTML='<div class="alert alert-warn">⚠ Au moins 2 natures de documents différentes sont requises pour la comparaison.</div>';return;}
+  let ct=`<p style="font-size:.8rem;color:var(--ink-2);margin-bottom:1rem;">${n} extraits codés · % de la valeur 1 par nature de document</p>
+  <table class="data-table"><thead><tr><th>Dimension</th>${types.map(t=>`<th title="${esc(t)}">${esc(t.length>22?t.substring(0,20)+'…':t)}</th>`).join('')}</tr></thead><tbody>`;
+  defs.forEach(dim=>{
+    ct+=`<tr><td style="font-size:.8rem;">${dim.label}</td>`;
+    types.forEach(t=>{const g=tg[t];ct+=`<td class="mono">${(g.filter(e=>DB.codages[e.id][dim.id]===dim.vals[0]).length/g.length*100).toFixed(0)}%</td>`;});
+    ct+='</tr>';
+  });
+  ct+='</tbody></table>';
+  document.getElementById('comp-table-wrap').innerHTML=ct;
+}
+
+// ═══════════ PARAMÈTRES ═══════════
+function renderParams(){
+  renderKeywords();
+  const el=document.getElementById('dims-summary'); if(!el)return;
+  el.innerHTML=DIMS.map(d=>`<div style="display:flex;align-items:flex-start;gap:.75rem;padding:.65rem 0;border-bottom:1px solid var(--border);">
+    <span class="dim-num" style="flex-shrink:0;margin-top:.1rem;">${d.id.replace('D','')}</span>
+    <div>
+      <strong style="font-size:.87rem;">${d.label}</strong>
+      <div style="font-size:.79rem;color:var(--ink-2);font-style:italic;">${d.question}</div>
+      <div style="font-size:.74rem;color:var(--ink-3);margin-top:.2rem;">Options : ${d.options.map(o=>o.v+' ('+o.l+')').join(' · ')}</div>
+    </div>
+  </div>`).join('');
+}
+
+// ═══════════ EXPORT ═══════════
+function csvRow(arr){return arr.map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(';')+'\r\n';}
+function exportCSV(type){
+  const BOM='\uFEFF'; let content='',filename='';
+  if(type==='corpus'){
+    filename='corpus.csv'; content=BOM+csvRow(['ID','Auteur','Année','Titre','Nature_Document','Période','Accessible','Référence']);
+    DB.corpus.forEach(d=>content+=csvRow([d.id,d.auteur,d.annee,d.titre,d.type,d.periode,d.accessible,d.note||'']));
+  } else if(type==='extraits'){
+    filename='extraits.csv'; content=BOM+csvRow(['ID_Extrait','ID_Doc','Section','Texte_Extrait','Nb_mots']);
+    DB.extraits.forEach(e=>content+=csvRow([e.id,e.doc_id,e.section,e.texte,e.mots]));
+  } else if(type==='codage'){
+    filename='codage.csv'; content=BOM+csvRow(['ID_Extrait','D1_Réification','D2_Vocab_Clinique','D2_Cible','D3_Focalisation','D4_Acquis','D5_Norme','D6_LP','Notes']);
+    DB.extraits.forEach(e=>{const c=DB.codages[e.id]||{};content+=csvRow([e.id,c.D1||'',c.D2||'',c.D2_Cible||'-',c.D3||'',c.D4||'',c.D5||'',c.D6||'',c.Notes||'']);});
+  } else if(type==='enrichi'){
+    filename='codage_enrichi.csv'; content=BOM+csvRow(['ID_Extrait','ID_Doc','Auteur','Année','Nature_Document','Période','Section','Nb_mots','D1_Réification','D2_Vocab_Clinique','D2_Cible','D3_Focalisation','D4_Acquis','D5_Norme','D6_LP','Notes']);
+    DB.extraits.forEach(e=>{
+      const doc=DB.corpus.find(d=>d.id===e.doc_id)||{}; const c=DB.codages[e.id]||{};
+      content+=csvRow([e.id,e.doc_id,doc.auteur||'',doc.annee||'',doc.type||'',doc.periode||'',e.section,e.mots,c.D1||'',c.D2||'',c.D2_Cible||'-',c.D3||'',c.D4||'',c.D5||'',c.D6||'',c.Notes||'']);
+    });
+  }
+  const blob=new Blob([content],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);
+}
+function exportJSON(){
+  const blob=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='pac_sauvegarde.json';a.click();URL.revokeObjectURL(url);
+}
+function importJSON(event){
+  const file=event.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=e=>{try{const d=JSON.parse(e.target.result);if(d.corpus&&d.extraits){DB={corpus:d.corpus,extraits:d.extraits,codages:d.codages||{},keywords:d.keywords||[]};save();alert('✓ Données restaurées.');}else alert('Fichier JSON invalide.');}catch{alert('Erreur de lecture.');}};
+  r.readAsText(file);event.target.value='';
+}
+function resetAll(){
+  if(!confirm('⚠ Effacer TOUTES les données ? Irréversible.'))return;
+  DB={corpus:[],extraits:[],codages:{},keywords:[]};activeExtrait=null;save();alert('Données effacées.');
+}
+
+// ═══════════ GLOBAL UI ═══════════
+function updateUI(){
+  renderCorpus(); renderExtraits(); renderCodingList();
+  const total=DB.extraits.length,coded=Object.keys(DB.codages).length;
+  document.getElementById('progress-text').textContent=`${coded} / ${total} codés`;
+  document.getElementById('progress-fill').style.width=(total?coded/total*100:0)+'%';
+}
+
+load(); updateUI();
+</script>
+</body>
+</html>
