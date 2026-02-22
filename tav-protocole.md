@@ -1,4 +1,4 @@
-**Protocole du Test d'Associations Verbales Informatique (TAVI)**
+## Protocole du Test d'Associations Verbales Informatique (TAVI)
 
 **Suivez ce guide étape par étape pour créer votre propre TAVI.**
 
