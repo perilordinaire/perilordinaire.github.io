@@ -12,7 +12,7 @@ Nos recherches portent sur l'épistémologie des catégories et les représentat
 
 ---
 
-**Test d'Associations Verbales Informatique — TAVI**
+**Test d'Associations Verbales Informatique - TAVI**
 
 Transposition informatique du protocole du Test d'Associations Verbales (Abric, 2003 ; Vergès, 1992) pour explorer les représentations sociales spontanées des professionnels du secondaire.
 
@@ -22,7 +22,7 @@ Transposition informatique du protocole du Test d'Associations Verbales (Abric, 
 
 ---
 
-**Plateforme d'Analyse de Corpus — PAC**
+**Plateforme d'Analyse de Corpus - PAC**
 
 Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique.
 
