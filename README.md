@@ -30,6 +30,7 @@ Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour
 
 🔎 [PAC - Obstacles et Présupposés](https://perilordinaire.github.io/pac-obstacles.html)
 
+---
 
 **ExtraScope**
 
@@ -39,4 +40,4 @@ Conception d'ExtraScope, un outil en ligne de sélection randomisée d'extraits 
 
 ---
 
-"péril ordinaire" fait référence au classement national des immeubles en "péril non immédiat" — oxymore à l'image de notre système éducatif — l'effondrement peut attendre, les moulins tournent toujours. (2026)
+*"péril ordinaire" fait référence au classement national des immeubles en "péril non immédiat" — oxymore à l'image de notre système éducatif — l'effondrement peut attendre, les moulins tournent toujours. (2026)*
