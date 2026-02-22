@@ -14,7 +14,7 @@ Nos recherches portent sur l'épistémologie des catégories et les représentat
 
 **Test d'Associations Verbales Informatique - TAVI**
 
-Transposition informatique du protocole du Test d'Associations Verbales (Abric, 2003 ; Vergès, 1992) pour explorer les représentations sociales spontanées des professionnels du secondaire. Export Script Sheets.
+Transposition informatique du protocole d'un Test d'Associations Verbales (Abric, 2003 ; Vergès, 1992), pour explorer les représentations sociales spontanées des professionnels du secondaire. Export Script Sheets.
 
 📋 [Protocole TAVI](https://perilordinaire.github.io/tav-protocole)
 
@@ -24,7 +24,7 @@ Transposition informatique du protocole du Test d'Associations Verbales (Abric, 
 
 **Plateforme d'Analyse de Corpus - PAC**
 
-Conception de PAC, une plateforme coopérative d'analyse de corpus en ligne pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique. Export CSV.
+Conception de PAC, une plateforme coopérative d'analyse et de codage de corpus en ligne, pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique. Export CSV (Sphinx, jamovi...).
 
 📋 [Protocole PAC](https://perilordinaire.github.io/pac-protocole.html)
 
