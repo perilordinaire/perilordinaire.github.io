@@ -1,4 +1,4 @@
-## Ferdinand Lamolet
+# Ferdinand Lamolet
 
 **Sciences de l'Éducation et de la Formation**, Aix-Marseille Université (AMU)
 
