@@ -40,8 +40,4 @@ Conception d'ExtraScope, un outil en ligne d'extraction d'extraits d'un document
 
 ---
 
-<div align="center">
-
 "péril ordinaire" fait référence au classement national des immeubles en "péril non immédiat" — oxymore à l'image de notre système éducatif — l'effondrement peut attendre. (2026)
-
-</div>
