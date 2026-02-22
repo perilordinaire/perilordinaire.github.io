@@ -40,4 +40,4 @@ Conception d'ExtraScope, un outil en ligne de sélection randomisée d'extraits 
 
 ---
 
-"péril ordinaire" fait référence au classement national des immeubles en "péril non immédiat" — oxymore à l'image de notre système éducatif — l'effondrement peut attendre. (2026)
+"péril ordinaire" fait référence au classement national des immeubles en "péril non immédiat" — oxymore à l'image de notre système éducatif — l'effondrement peut attendre, les moulins tournent toujours. (2026)
