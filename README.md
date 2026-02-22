@@ -1,12 +1,9 @@
-<dev>
 
-<h1 style="text-align:center;">Ferdinand Lamolet</h1>
+## Ferdinand Lamolet
 
-<p style="text-align:center;">**Sciences de l'Éducation et de la Formation**, Aix-Marseille Université (AMU)
+**Sciences de l'Éducation et de la Formation**, Aix-Marseille Université (AMU)
 
-ferdinand.lamolet@etu.univ-amu.fr</p>
-
-</dev>
+ferdinand.lamolet@etu.univ-amu.fr
 
 ---
 
