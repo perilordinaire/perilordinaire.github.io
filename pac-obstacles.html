@@ -406,16 +406,16 @@ const DIMS = [
       absent:['Processus de décrochage (dynamique temporelle)','Désengagement progressif','Les décrochages au pluriel (hétérogénéité)','Analyse relationnelle institution–élève']
     }
   },
-  {
-    id:'D2', label:'Vocabulaire clinique',
-    question:'Un vocabulaire médical ou pathologique est-il utilisé ?',
+ {
+    id:'D2', label:'Vocabulaire déficitaire',
+    question:'L\'élève est-il décrit à travers un lexique de manque, de fragilité ou de risque ?',
     options:[{v:'P',l:'Présent'},{v:'A',l:'Absent'},{v:'M',l:'Mixte'}],
     indicators:{
-      present:['Termes médicaux : fragile, en souffrance, à risque, symptôme','Termes thérapeutiques : traiter, remédier, soigner, panser','Lutte contre (modèle de la maladie)','Dépister, prévenir (vocabulaire préventif médical)'],
-      absent:['Vocabulaire sociologique : position, trajectoire, structure','Vocabulaire neutre : situation, parcours, expérience','Absence de pathologisation de la situation']
+      present:['Termes de fragilité : fragile, vulnérable, en souffrance, en difficulté','Termes de risque : à risque, facteur de risque, profil à risque','Termes médicaux : symptôme, dépister, prévenir, traiter, remédier','Termes de manque : sans diplôme, sans qualification, sans perspective','Lexique de la prise en charge sans agentivité de l\'élève : repérer, accompagner'],
+      absent:['Vocabulaire de la trajectoire et de l\'agentivité : parcours, choix, stratégie','Vocabulaire sociologique neutre : position, structure, expérience scolaire','L\'élève défini par ses ressources ou ses logiques propres','Analyse des conditions sans réduction à l\'individu défaillant']
     },
-    conditional:{ triggerValue:'P', field:'D2_Cible', label:'Cible du vocabulaire clinique',
-      options:[{v:'LP',l:'Ciblé sur le LP spécifiquement'},{v:'GEN',l:'Général (non spécifique au LP)'}]
+    conditional:{ triggerValue:'P', field:'D2_Cible', label:'Registre dominant du vocabulaire déficitaire',
+      options:[{v:'MED',l:'Médical / para-médical'},{v:'RSQ',l:'Risque / managérial'},{v:'SOC',l:'Social-clinique (travail social)'}]
     }
   },
   {
@@ -756,7 +756,7 @@ function renderSynthese(){
   }
   const defs=[
     {id:'D1',label:'D1 — Réification',         vals:['P','A','M'],lbls:['Présente','Absente','Mixte']},
-    {id:'D2',label:'D2 — Vocab. clinique',      vals:['P','A','M'],lbls:['Présent','Absent','Mixte']},
+    {id:'D2',label:'D2 — Vocab. déficitaire',      vals:['P','A','M'],lbls:['Présent','Absent','Mixte']},
     {id:'D3',label:'D3 — Focalisation',         vals:['E','I','M'],lbls:['Élève','Institution','Mixte']},
     {id:'D4',label:'D4 — Acquis hors école',    vals:['P','A','M'],lbls:['Présente','Absente','Ambiguë']},
     {id:'D5',label:'D5 — Norme',                vals:['I','E','M'],lbls:['Implicite','Explicite','Mixte']},
