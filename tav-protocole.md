@@ -1,6 +1,7 @@
-## Protocole - Test d'Associations Verbales Informatique
+### *Guide de réutilisation*
+## Test d'Associations Verbales Informatique (TAVI)
 
-**Suivez ce guide étape par étape pour créer votre propre TAVI !**
+**Suivez ce protocole étape par étape pour créer votre propre test en ligne**
 
 ---
 
