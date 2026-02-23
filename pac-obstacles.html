@@ -508,10 +508,9 @@ function addCorpus(){
   const titre=document.getElementById('c-titre').value.trim();
   const type=document.getElementById('c-type').value;
   const per=document.getElementById('c-periode').value;
-  const acc=document.getElementById('c-accessible').value;
   const note=document.getElementById('c-note').value.trim();
   if(!auteur||!titre||!type||!per){alert('Remplissez au minimum : Auteur, Titre, Nature et Période.');return;}
-  DB.corpus.push({id:genId(DB.corpus),auteur,annee,titre,type,periode:per,accessible:acc,note});
+  DB.corpus.push({id:genId(DB.corpus),auteur,annee,titre,type,periode:per,accessible:'Oui',note});
   ['c-auteur','c-annee','c-titre','c-note'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('c-type').value=''; document.getElementById('c-periode').value='';
   save();
