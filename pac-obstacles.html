@@ -818,13 +818,13 @@ function exportCSV(type){
     filename='extraits.csv'; content=BOM+csvRow(['ID_Extrait','ID_Doc','Section','Texte_Extrait','Nb_mots']);
     DB.extraits.forEach(e=>content+=csvRow([e.id,e.doc_id,e.section,e.texte,e.mots]));
   } else if(type==='codage'){
-    filename='codage.csv'; content=BOM+csvRow(['ID_Extrait','D1_Réification','D2_Vocab_Clinique','D2_Cible','D3_Focalisation','D4_Acquis','D5_Norme','D6_LP','Notes']);
-    DB.extraits.forEach(e=>{const c=DB.codages[e.id]||{};content+=csvRow([e.id,c.D1||'',c.D2||'',c.D2_Cible||'-',c.D3||'',c.D4||'',c.D5||'',c.D6||'',c.Notes||'']);});
+    filename='codage.csv'; content=BOM+csvRow(['ID_Extrait','D1_Réification','D2_Vocab_Clinique','D3_Focalisation','D4_Acquis','D5_Norme','D6_LP','Notes']);
+    DB.extraits.forEach(e=>{const c=DB.codages[e.id]||{};content+=csvRow([e.id,c.D1||'',c.D2||'',c.D3||'',c.D4||'',c.D5||'',c.D6||'',c.Notes||'']);});
   } else if(type==='enrichi'){
-    filename='codage_enrichi.csv'; content=BOM+csvRow(['ID_Extrait','ID_Doc','Auteur','Année','Nature_Document','Période','Section','Nb_mots','D1_Réification','D2_Vocab_Clinique','D2_Cible','D3_Focalisation','D4_Acquis','D5_Norme','D6_LP','Notes']);
+    filename='codage_enrichi.csv'; content=BOM+csvRow(['ID_Extrait','ID_Doc','Auteur','Année','Nature_Document','Période','Section','Nb_mots','D1_Réification','D2_Vocab_Clinique','D3_Focalisation','D4_Acquis','D5_Norme','D6_LP','Notes']);
     DB.extraits.forEach(e=>{
       const doc=DB.corpus.find(d=>d.id===e.doc_id)||{}; const c=DB.codages[e.id]||{};
-      content+=csvRow([e.id,e.doc_id,doc.auteur||'',doc.annee||'',doc.type||'',doc.periode||'',e.section,e.mots,c.D1||'',c.D2||'',c.D2_Cible||'-',c.D3||'',c.D4||'',c.D5||'',c.D6||'',c.Notes||'']);
+      content+=csvRow([e.id,e.doc_id,doc.auteur||'',doc.annee||'',doc.type||'',doc.periode||'',e.section,e.mots,c.D1||'',c.D2||'',c.D3||'',c.D4||'',c.D5||'',c.D6||'',c.Notes||'']);
     });
   }
   const blob=new Blob([content],{type:'text/csv;charset=utf-8;'});
