@@ -13,7 +13,7 @@
 
 ---
 
-## Étape 1 : Récupérer le code source
+### Étape 1 : Récupérer le code source
 
 1. Allez sur la page : [https://perilordinaire.github.io/tav-raccrochage.html](https://perilordinaire.github.io/tav-raccrochage.html)
 2. Faites un **clic droit** sur la page → **Afficher le code source** (ou `Ctrl+U` / `Cmd+U`)
@@ -24,7 +24,7 @@ Tout le code est dans un seul fichier HTML, c'est voulu pour faciliter la réuti
 
 ---
 
-## Étape 2 : Créer votre dépôt GitHub
+### Étape 2 : Créer votre dépôt GitHub
 
 1. Connectez-vous à [GitHub](https://github.com)
 2. Cliquez sur le **+** en haut à droite → **New repository**
@@ -35,7 +35,7 @@ Tout le code est dans un seul fichier HTML, c'est voulu pour faciliter la réuti
 
 ---
 
-## Étape 3 : Créer votre fichier HTML
+### Étape 3 : Créer votre fichier HTML
 
 1. Dans votre nouveau dépôt, cliquez sur **Add file** → **Create new file**
 2. Nommez le fichier : `index.html`
@@ -44,7 +44,7 @@ Tout le code est dans un seul fichier HTML, c'est voulu pour faciliter la réuti
 
 ---
 
-## Étape 4 : Personnaliser vos termes inducteurs
+### Étape 4 : Personnaliser vos termes inducteurs
 
 1. Dans votre fichier `index.html`, cherchez cette section (vers la ligne 690) :
 
@@ -75,9 +75,9 @@ Vous pouvez mettre entre 3 et 8 termes. Gardez la même structure avec les guill
 
 ---
 
-## Étape 5 : Configurer votre Google Sheet
+### Étape 5 : Configurer votre Google Sheet
 
-### 5.1 Créer la feuille de calcul
+#### 5.1 Créer la feuille de calcul
 
 1. Allez sur [Google Sheets](https://sheets.google.com)
 2. Créez une **nouvelle feuille**
@@ -90,7 +90,7 @@ Ancienneté Structure | Ancienneté Éducation | Diplôme | Support |
 Environnement | Isolement | Inducteur | Mot | Rang
 ```
 
-### 5.2 Créer le script Google Apps
+#### 5.2 Créer le script Google Apps
 
 1. Dans votre Google Sheet : **Extensions** → **Apps Script**
 2. Supprimez le code par défaut
@@ -129,7 +129,7 @@ function doPost(e) {
 9. **Autorisez** l'application (suivez les étapes Google)
 10. **COPIEZ l'URL** fournie (elle ressemble à `https://script.google.com/macros/s/AKfycby.../exec`)
 
-### 5.3 Intégrer l'URL dans votre code
+#### 5.3 Intégrer l'URL dans votre code
 
 1. Retournez dans votre `index.html` sur GitHub
 2. Cherchez cette ligne (vers la ligne 870) :
@@ -143,7 +143,7 @@ const SCRIPT_URL = 'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI';
 
 ---
 
-## Étape 6 : Activer GitHub Pages
+### Étape 6 : Activer GitHub Pages
 
 1. Dans votre dépôt GitHub, allez dans **Settings** (en haut)
 2. Dans le menu de gauche, cliquez sur **Pages**
@@ -154,7 +154,7 @@ const SCRIPT_URL = 'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI';
 
 ---
 
-## Étape 7 : Tester votre TAV
+### Étape 7 : Tester votre TAV
 
 1. Ouvrez l'URL de votre TAV
 2. Faites un test complet du début à la fin
@@ -167,7 +167,7 @@ const SCRIPT_URL = 'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI';
 
 ---
 
-## Étape 8 (optionnelle) : Personnaliser l'apparence
+### Étape 8 (optionnelle) : Personnaliser l'apparence
 
 Vous pouvez modifier :
 
@@ -188,7 +188,7 @@ Vous pouvez modifier :
 
 ---
 
-## N'oubliez pas de respecter les propriétés intellectuelles
+### N'oubliez pas de respecter les propriétés intellectuelles
 
 Si vous utilisez cet outil, veuillez conserver les références méthodologiques dans le pied de page (ligne ~905) :
 
@@ -199,7 +199,7 @@ Si vous utilisez cet outil, veuillez conserver les références méthodologiques
 ```
 ---
 
-## Conseils pour votre recherche
+### Conseils pour votre recherche
 
 **Taille de l'échantillon :** 
 - Minimum recommandé (Abric, 2003) : **N = 80** participants
@@ -216,7 +216,7 @@ Si vous utilisez cet outil, veuillez conserver les références méthodologiques
 
 ---
 
-## Besoin d'aide ?
+### Besoin d'aide ?
 
 Si vous rencontrez un problème :
 1. Vérifiez que vous avez suivi **toutes les étapes** dans l'ordre
