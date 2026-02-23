@@ -446,12 +446,14 @@ const DIMS = [
     }, presentLabel:'Norme IMPLICITE', absentLabel:'Norme EXPLICITE'
   },
   {
-    id:'D6', label:'Statut du lycée professionnel',
-    question:'Le LP est-il défini par rapport au LGT (par défaut) ou reconnu comme ayant une logique propre ?',
-    options:[{v:'D',l:'Par défaut (écart LGT)'},{v:'P',l:'Normativité propre'},{v:'M',l:'Mixte'}],
+    id:'D6', label:'Association LP / décrochage',
+    question:'Le décrochage est-il naturalisé comme phénomène propre au LP, ou traité comme transversal aux filières ?',
+    options:[{v:'N',l:'Naturalisé (LP = lieu évident)'},{v:'T',l:'Transversal (toutes filières)'},{v:'P',l:'Problématisé (association questionnée)'}],
     indicators:{
-      present:['Comparaison systématique défavorable au LGT','Voie de garage, second choix, filière de relégation','Élèves en difficulté orientés en LP','Hiérarchie des filières naturalisée'],
-      absent:['Rapport au savoir pratique reconnu','Valorisation des compétences techniques','LP comme logique alternative non inférieure','Critique de la hiérarchie des filières']
+      present:['Exemples systématiquement pris en LP sans justification','« Les décrocheurs » renvoie implicitement aux élèves de LP','Aucune mention du décrochage en LGT, BTS ou université','Le LP apparaît comme contexte par défaut, non justifié'],
+      absent:['Décrochage traité comme phénomène multi-filières','Données comparatives entre voies (générale, technologique, professionnelle)','Mention explicite du décrochage hors LP','Questionnement de l\'association LP / décrochage']
+    },
+    presentLabel:'Association NATURALISÉE', absentLabel:'Décrochage TRANSVERSAL ou PROBLÉMATISÉ'
     }
   }
 ];
