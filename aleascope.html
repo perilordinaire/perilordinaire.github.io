@@ -1110,7 +1110,7 @@ async function processFile(file) {
     document.getElementById('btn1Next').disabled = false;
 
     // Add default terms from protocol
-    const defaults = ['décrochage', 'décrocheur', 'raccrochage', 'lycée professionnel', 'abandon scolaire'];
+    const defaults = ['décrochage', 'décrocheurs', 'lycée professionnel', 'abandon', 'fragile', 'à risque', 'processus', 'trajectoire', 'responsabilité', 'profil', 'système'];
     if (searchTerms.length === 0) {
       defaults.forEach(addTag);
     }
