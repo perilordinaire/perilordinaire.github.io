@@ -831,8 +831,8 @@
         </div>
 
         <div class="form-group">
-          <label>Écart maximal entre occurrences <span id="maxDistVal">— <span class="range-value">100</span> mots</span></label>
-          <input type="range" id="maxDist" min="20" max="400" value="100" step="10"
+          <label>Écart maximal entre occurrences <span id="maxDistVal">— <span class="range-value">200</span> mots</span></label>
+          <input type="range" id="maxDist" min="20" max="400" value="200" step="10"
             oninput="syncRangeSimple(this,'maxDistVal')">
           <div class="range-labels"><span>20</span><span>400</span></div>
           <div class="help-text">Distance maximale (en mots) entre la 1ʳᵉ et la dernière occurrence dans l'extrait.</div>
@@ -993,10 +993,10 @@
 
     <div class="export-bar">
       <span class="export-bar-label">Exporter</span>
+      <button class="btn btn-gold"      style="font-size:0.8rem;padding:0.45rem 1rem;" onclick="goTo(4)">← Changer la sélection</button>
       <button class="btn btn-secondary" style="font-size:0.8rem;padding:0.45rem 1rem;" onclick="copyAll()">📋 Tout copier</button>
       <button class="btn btn-secondary" style="font-size:0.8rem;padding:0.45rem 1rem;" onclick="exportTxt()">📄 .txt</button>
       <button class="btn btn-secondary" style="font-size:0.8rem;padding:0.45rem 1rem;" onclick="exportCsv()">📊 .csv</button>
-      <button class="btn btn-gold"      style="font-size:0.8rem;padding:0.45rem 1rem;" onclick="goTo(4)">← Changer la sélection</button>
     </div>
 
     <div id="extractsList"></div>
