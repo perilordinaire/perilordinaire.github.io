@@ -327,6 +327,10 @@ mark.kw{background:var(--highlight);color:var(--ink);border-radius:2px;padding:0
     <div class="card-header"><span class="card-title">Comparaison par nature de document</span></div>
     <div class="card-body" id="comp-table-wrap"><div class="empty-state"><p>Données insuffisantes (au moins 2 natures de documents requises).</p></div></div>
   </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Comparaison par décennie de publication</span></div>
+    <div class="card-body" id="comp-decade-wrap"><div class="empty-state"><p>Données insuffisantes (au moins 2 décennies requises).</p></div></div>
+  </div>
 </div>
 
 <!-- ══════════ EXPORT ══════════ -->
@@ -791,6 +795,23 @@ function renderSynthese(){
   });
   ct+='</tbody></table>';
   document.getElementById('comp-table-wrap').innerHTML=ct;
+  // Comparaison par décennie
+  const dg={};
+  coded.forEach(e=>{const doc=DB.corpus.find(d=>d.id===e.doc_id)||{};const p=doc.periode||'Non renseignée';if(!dg[p])dg[p]=[];dg[p].push(e);});
+  const decades=Object.keys(dg).sort();
+  if(decades.length<2){
+    document.getElementById('comp-decade-wrap').innerHTML='<div class="alert alert-warn">⚠ Au moins 2 décennies différentes sont requises pour la comparaison.</div>';
+  } else {
+    let cd=`<p style="font-size:.8rem;color:var(--ink-2);margin-bottom:1rem;">${n} extraits codés · % de la valeur 1 par décennie</p>
+    <table class="data-table"><thead><tr><th>Dimension</th>${decades.map(p=>`<th>${esc(p)}</th>`).join('')}</tr></thead><tbody>`;
+    defs.forEach(dim=>{
+      cd+=`<tr><td style="font-size:.8rem;">${dim.label}</td>`;
+      decades.forEach(p=>{const g=dg[p];cd+=`<td class="mono">${(g.filter(e=>DB.codages[e.id][dim.id]===dim.vals[0]).length/g.length*100).toFixed(0)}%</td>`;});
+      cd+='</tr>';
+    });
+    cd+='</tbody></table>';
+    document.getElementById('comp-decade-wrap').innerHTML=cd;
+  }
 }
 
 // ═══════════ PARAMÈTRES ═══════════
