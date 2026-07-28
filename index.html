@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Fichier Wallabee</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;600;700&family=Fraunces:ital,wght@0,500;1,500;1,600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="stamp-title">
+      <span class="stamp-ring">DEPUIS 1965</span>
+      <h1>Le Fichier<br>Wallabee</h1>
+    </div>
+    <p class="subtitle">Journal de bord de quatre paires, tenue par tenue.</p>
+  </div>
+  <div class="masthead-stats" id="global-stats" aria-live="polite"></div>
+</header>
+
+<main id="app">
+
+  <!-- DASHBOARD -->
+  <section id="view-dashboard" class="view">
+    <div class="card-grid" id="card-grid"></div>
+  </section>
+
+  <!-- DETAIL -->
+  <section id="view-detail" class="view" hidden>
+    <a href="#/" class="back-link">&larr; retour au fichier</a>
+
+    <div class="detail-head">
+      <button type="button" class="swatch-btn" id="detail-swatch" aria-label="Changer la couleur de la fiche">
+        <input type="color" id="detail-color" aria-label="Couleur de la paire">
+      </button>
+      <div class="detail-head-text">
+        <span class="fiche-no" id="detail-no">FICHE 01</span>
+        <h2 class="pair-name" id="detail-name" contenteditable="true" spellcheck="false" role="textbox" aria-label="Nom de la paire"></h2>
+        <p class="detail-meta" id="detail-meta"></p>
+      </div>
+    </div>
+
+    <div class="stitch-divider" aria-hidden="true"></div>
+
+    <button type="button" class="btn-primary" id="toggle-form-btn">+ nouvelle entrée</button>
+
+    <form id="entry-form" class="entry-form" hidden>
+      <input type="hidden" id="entry-id">
+      <div class="form-row">
+        <label for="entry-date">Date</label>
+        <input type="date" id="entry-date" required>
+      </div>
+      <div class="form-row">
+        <label for="entry-outfit">Tenue portée</label>
+        <textarea id="entry-outfit" rows="2" placeholder="ex. chemise à carreaux, jean brut, veste en velours côtelé" required></textarea>
+      </div>
+      <div class="form-row">
+        <label for="entry-occasion">Occasion</label>
+        <input type="text" id="entry-occasion" list="occasion-suggestions" placeholder="ex. terrain, bureau, soirée">
+        <datalist id="occasion-suggestions">
+          <option value="Bureau">
+          <option value="Terrain">
+          <option value="Réunion">
+          <option value="Rendez-vous">
+          <option value="Soirée">
+          <option value="Week-end">
+        </datalist>
+      </div>
+      <div class="form-row">
+        <label for="entry-notes">Notes <span class="optional">(facultatif)</span></label>
+        <textarea id="entry-notes" rows="2" placeholder="météo, ressenti, à refaire ou pas..."></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-primary" id="entry-submit-btn">Enregistrer l'entrée</button>
+        <button type="button" class="btn-ghost" id="entry-cancel-btn">Annuler</button>
+      </div>
+    </form>
+
+    <div class="stitch-divider" aria-hidden="true"></div>
+
+    <div class="search-row">
+      <input type="search" id="search-input" placeholder="Rechercher dans ce journal…" aria-label="Rechercher dans ce journal">
+    </div>
+
+    <ul class="entry-list" id="entry-list"></ul>
+    <p class="empty-state" id="empty-state" hidden>Aucune entrée pour l'instant. La fiche attend sa première tenue.</p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p>Vos données restent dans ce navigateur, sur cet appareil.</p>
+    <div class="footer-actions">
+      <button type="button" id="export-btn" class="btn-ghost">Exporter (.json)</button>
+      <button type="button" id="import-btn" class="btn-ghost">Importer</button>
+      <input type="file" id="import-input" accept="application/json" hidden>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
